@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Trash } from 'lucide-react';
+import { Check, Pencil } from 'lucide-react';
 
 function KelolaUjianPage() {
   const exams = [
@@ -88,8 +88,11 @@ function KelolaUjianPage() {
               <TableCell className="py-4">{data.totalParticipants} peserta</TableCell>
               <TableCell className="py-4">{data.date}</TableCell>
               <TableCell className="pr-4 py-4 text-center space-x-2">
-                <Button variant="destructive" size="icon">
-                  <Trash className="w-4 h-4" />
+                <Button variant="outline" size="icon">
+                  <Pencil className="w-4 h-4" />
+                </Button>
+                <Button variant="success" size="icon">
+                  <Check className="w-4 h-4" />
                 </Button>
               </TableCell>
             </TableRow>

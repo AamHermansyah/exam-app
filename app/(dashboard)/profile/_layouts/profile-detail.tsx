@@ -13,7 +13,7 @@ function ProfilDetail() {
     <div className="px-4 py-6 border rounded-md">
       <form action="" className="space-y-4">
         <h3 className="font-semibold leading-none">
-          Profile Information
+          Informasi Pribadi
         </h3>
         <div className="grid w-full items-center gap-y-2">
           <Label htmlFor="name" className="font-semibold">Nama Lengkap</Label>
