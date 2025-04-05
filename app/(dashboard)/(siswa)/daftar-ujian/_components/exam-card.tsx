@@ -10,7 +10,7 @@ interface IProps {
   data: {
     title: string;
     categories: string[];
-    slug: string;
+    id: string;
   };
 }
 
@@ -37,7 +37,7 @@ function ExamCard({ data }: IProps) {
             ))}
           </div>
         </div>
-        <Link href={`/ujian/${data.slug}`} className="block">
+        <Link href={`/ujian/${data.id}`} className="block">
           <Button
             size="lg"
             className="w-full sm:text-base"

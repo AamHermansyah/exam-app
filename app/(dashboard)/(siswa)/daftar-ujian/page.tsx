@@ -7,13 +7,11 @@ const studentExams = [
     id: 'exam-1',
     title: "Matematika Umum - Dasar Aljabar",
     categories: ["Matematika", "SMA", "Ujian Akhir"],
-    slug: "ujian-matematika"
   },
   {
     id: 'exam-2',
     title: "Fisika Terapan - Teori dan Perhitungan",
     categories: ["Fisika", "SMA", "Ujian Akhir"],
-    slug: "ujian-fisika"
   },
 ];
 

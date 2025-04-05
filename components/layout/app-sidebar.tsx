@@ -17,6 +17,7 @@ import {
 import Link from "next/link"
 import { navigations } from "@/constants"
 import { cn } from "@/lib/utils"
+import { usePathname } from "next/navigation"
 
 const user = {
   name: "Jhon Doe",
@@ -26,6 +27,7 @@ const user = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { state, isMobile } = useSidebar();
+  const pathname = usePathname();
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -44,7 +46,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenu>
               {navigations[key].map((item) => (
                 <Link key={item.title} href={item.url}>
-                  <SidebarMenuButton variant="primary" tooltip={item.title} className="cursor-pointer">
+                  <SidebarMenuButton
+                    variant="primary"
+                    tooltip={item.title}
+                    isActive={
+                      (pathname === '/' && item.url === '/')
+                      || (item.url !== '/' && pathname.includes(item.url))}
+                    className="cursor-pointer"
+                  >
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>
                   </SidebarMenuButton>

@@ -10,7 +10,8 @@ import {
 } from "@/components/ui/table";
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Check, Pencil } from 'lucide-react';
+import { Eye, Pencil } from 'lucide-react';
+import Link from 'next/link';
 
 function KelolaUjianPage() {
   const exams = [
@@ -50,7 +51,9 @@ function KelolaUjianPage() {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h3 className="font-semibold text-lg">Kelola Ujian</h3>
-        <Button className="bg-primary text-white">Tambah Ujian</Button>
+        <Link href="/kelola-ujian/tambah">
+          <Button className="bg-primary text-white">Tambah Ujian</Button>
+        </Link>
       </div>
       <Table className="w-full overflow-x-auto border">
         <TableCaption>Daftar ujian yang tersedia dalam sistem.</TableCaption>
@@ -91,9 +94,11 @@ function KelolaUjianPage() {
                 <Button variant="outline" size="icon">
                   <Pencil className="w-4 h-4" />
                 </Button>
-                <Button variant="success" size="icon">
-                  <Check className="w-4 h-4" />
-                </Button>
+                <Link href={`/kelola-ujian/${data.id}`} target="_blank">
+                  <Button variant="outline" size="icon">
+                    <Eye className="w-4 h-4" />
+                  </Button>
+                </Link>
               </TableCell>
             </TableRow>
           ))}

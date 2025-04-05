@@ -16,7 +16,7 @@ function LayoutDashboard({ children }: { children: ReactNode }) {
             <SidebarTrigger className="-ml-1" />
           </div>
         </header>
-        <main className="px-4 pb-4">
+        <main className="px-4 pb-4 h-full">
           {children}
         </main>
       </SidebarInset>
