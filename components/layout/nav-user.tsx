@@ -26,6 +26,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import Link from "next/link"
+import { logoutUser } from "@/actions/auth"
 
 export function NavUser({
   user,
@@ -77,18 +78,23 @@ export function NavUser({
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <Link href="/profile">
-              <DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/profile">
                 <GraduationCap />
                 Profil
-              </DropdownMenuItem>
-            </Link>
-            <Link href="/login">
-              <DropdownMenuItem className="text-destructive focus:text-destructive">
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <button
+                className="w-full flex gap-2 text-destructive focus:text-destructive"
+                onClick={async () => {
+                  logoutUser();
+                }}
+              >
                 <LogOut className="text-destructive" />
                 Keluar
-              </DropdownMenuItem>
-            </Link>
+              </button>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

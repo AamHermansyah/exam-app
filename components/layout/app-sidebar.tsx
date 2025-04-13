@@ -18,6 +18,7 @@ import Link from "next/link"
 import { navigations } from "@/constants"
 import { cn } from "@/lib/utils"
 import { usePathname } from "next/navigation"
+import Image from "next/image"
 
 const user = {
   name: "Jhon Doe",
@@ -32,12 +33,20 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <h1 className={cn(
-          'text-center text-primary font-semibold w-[--radix-dropdown-menu-trigger-width] whitespace-wrap overflow-hidden',
-          state === 'collapsed' && !isMobile ? 'text-sm py-1.5' : 'tracking-wider px-4 py-2.5'
-        )}>
-          {state === 'collapsed' && !isMobile ? 'UK' : 'UjiKita'}
-        </h1>
+        <div className="w-[--radix-dropdown-menu-trigger-width] flex items-center gap-2">
+          <Image
+            src="/images/adls-logo.png"
+            alt="logo"
+            width={50}
+            height={50}
+            priority
+          />
+          {state === 'expanded' && (
+            <h1 className="flex-1 text-sm py-1.5 text-primary font-semibold whitespace-wrap overflow-hidden">
+              Asesmen Digital Literasi Sains
+            </h1>
+          )}
+        </div>
       </SidebarHeader>
       <SidebarContent>
         {(Object.keys(navigations) as Array<keyof typeof navigations>).map((key) => (

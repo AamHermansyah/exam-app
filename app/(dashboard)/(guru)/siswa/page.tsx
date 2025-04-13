@@ -1,3 +1,4 @@
+import { Pagination } from "@/components/ui/pagination";
 import {
   Table,
   TableBody,
@@ -7,13 +8,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { getAllStudents } from "@/data/user";
+import { formatDate } from "@/lib/utils";
+import { SearchParams } from "next/dist/server/request/search-params";
+import { cookies } from "next/headers";
 
-function SiswaPage() {
-  const usersList = [
-    { id: 1, nama: "Ahmad Fauzi", email: "ahmad@example.com", tanggalDaftar: "1 Maret 2025" },
-    { id: 2, nama: "Siti Aisyah", email: "siti@example.com", tanggalDaftar: "3 Maret 2025" },
-    { id: 3, nama: "Budi Santoso", email: "budi@example.com", tanggalDaftar: "5 Maret 2025" },
-  ];
+async function SiswaPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
+  const page = (await searchParams).page;
+  const token = (await cookies()).get('token');
+  const { data: students, ...pagination } = await getAllStudents({
+    token: token?.value!,
+    page: typeof page === 'string' && !isNaN(+page) ? +page : 1
+  });
 
   return (
     <div className="space-y-4">
@@ -26,19 +32,34 @@ function SiswaPage() {
             <TableHead className="py-4">Nama</TableHead>
             <TableHead className="py-4">Email</TableHead>
             <TableHead className="pr-4 py-4">Tanggal Daftar</TableHead>
+            <TableHead className="pr-4 py-4">Tujuan Penggunaan</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {usersList.map((siswa, index) => (
+          {students.length > 0 ? students.map((siswa, index) => (
             <TableRow key={siswa.id}>
               <TableCell className="pl-4 py-4">{index + 1}</TableCell>
-              <TableCell className="py-4">{siswa.nama}</TableCell>
+              <TableCell className="py-4">{siswa.fullName}</TableCell>
               <TableCell className="py-4">{siswa.email}</TableCell>
-              <TableCell className="pr-4 py-4">{siswa.tanggalDaftar}</TableCell>
+              <TableCell className="pr-4 py-4">{formatDate(siswa.createdAt)}</TableCell>
+              <TableCell className="pr-4 py-4">{siswa.purpose}</TableCell>
             </TableRow>
-          ))}
+          )) : (
+            <TableRow>
+              <TableCell colSpan={5} className="px-4 py-4 text-center">
+                Data masih kosong
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
+      <div className="w-full flex justify-end">
+        <Pagination
+          className="w-max"
+          page={pagination.page}
+          pages={pagination.totalPages}
+        />
+      </div>
     </div>
   );
 }

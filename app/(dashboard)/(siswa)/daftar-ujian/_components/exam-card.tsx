@@ -2,49 +2,79 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { BriefcaseMedical, Users } from "lucide-react";
+import { categories } from "@/constants";
+import { Exam, ExamSubmission } from "@/lib/generated/prisma";
+import { isSubmissionExpired } from "@/lib/utils";
+import { Clock3, FileText, Tag, Users } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
 interface IProps {
-  data: {
-    title: string;
-    categories: string[];
-    id: string;
+  data: Exam & {
+    submissionCount: number;
+    hasSubmitted: boolean;
+    ExamSubmission: ExamSubmission[];
   };
 }
 
 function ExamCard({ data }: IProps) {
+  const submission = data.ExamSubmission[0];
+  const Icon = categories.find((category) => category.value === data.category)?.icon;
+
   return (
-    <div className="p-4 rounded-md border">
+    <div className="p-4 rounded-md border shadow-sm hover:shadow-md transition">
       <div className="w-full h-full flex flex-col justify-between gap-4">
-        <div className="relative w-full min-h-[200px] flex-1 rounded-md bg-primary/20 flex justify-center items-center">
-          <BriefcaseMedical className="w-20 h-20 text-primary" />
+        {/* Gambar atau ikon ujian */}
+        <div className="relative w-full min-h-[200px] flex-1 rounded-md bg-primary/10 flex justify-center items-center">
+          {Icon && (
+            <Icon className="w-20 h-20 text-primary" />
+          )}
           <span className="absolute px-2 py-1 rounded-full bg-background border shadow top-3 right-3 flex items-center gap-2 text-xs">
-            <Users className="w-4 h-4" /> 20 Peserta
+            <Users className="w-4 h-4" /> {data.submissionCount} Submit
           </span>
         </div>
+
+        {/* Info utama */}
         <div className="space-y-2">
           <h2 className="text-lg font-bold">{data.title}</h2>
+
+          {/* Kategori */}
+          <div className="flex items-center gap-2 text-sm text-muted-foreground capitalize">
+            <FileText className="w-4 h-4" />
+            {data.category.replaceAll('-', ' ')}
+          </div>
+
+          {/* Durasi */}
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Clock3 className="w-4 h-4" />
+            {data.duration} menit
+          </div>
+
+          {/* Tags */}
           <div className="w-full flex gap-2 items-center flex-wrap">
-            {data.categories.map((category) => (
+            {data.tags.split(',').map((tag) => (
               <Badge
                 key={crypto.randomUUID()}
                 className="rounded bg-neutral-200 text-neutral-900 hover:bg-neutral-200"
               >
-                {category}
+                <Tag className="w-3 h-3 mr-1" />
+                {tag}
               </Badge>
             ))}
           </div>
         </div>
-        <Link href={`/ujian/${data.id}`} className="block">
-          <Button
-            size="lg"
-            className="w-full sm:text-base"
-          >
-            Mulai
+
+        {(data.hasSubmitted && submission?.score !== null) || isSubmissionExpired(submission?.expireAt) ? (
+          <Button variant="muted" className="w-full" disabled>
+            Selesai
           </Button>
-        </Link>
+        ) : (
+          <Link href={`/ujian${submission?.score === null ? `/${data.id}` : `?id=${data.id}`}`} className="block">
+            <Button className="w-full">
+              {submission?.score === null ? 'Lanjutkan' : 'Mulai'}
+            </Button>
+          </Link>
+        )}
       </div>
     </div>
   );

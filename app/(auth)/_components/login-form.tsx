@@ -1,3 +1,8 @@
+"use client"
+
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -8,13 +13,55 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
 import InputPassword from "@/components/core/input-password"
+import Link from "next/link"
+import { loginSchema, LoginSchemaType } from "@/schemas/login"
+import { useState, useTransition } from "react"
+import { useRouter } from "next/navigation"
+import { loginUser } from "@/actions/auth"
+import { toast } from "sonner"
+import { FormError } from "@/components/shared/form-error"
+import { LoaderCircle } from "lucide-react"
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+  const [loading, startServer] = useTransition();
+  const [error, setError] = useState("");
+  const navigate = useRouter();
+
+  const form = useForm<LoginSchemaType>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  })
+
+  function onSubmit(values: LoginSchemaType) {
+    setError("");
+    startServer(() => {
+      loginUser(values)
+        .then((data) => {
+          if (data.status === 'success') {
+            toast.success('Login berhasil!');
+            navigate.push('/');
+          } else {
+            setError(data.message!);
+          }
+        });
+    });
+  }
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -25,37 +72,47 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
-            <div className="grid gap-6">
-              <div className="grid gap-6">
-                <div className="grid gap-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="m@student.com"
-                    required
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="password">Password</Label>
-                  <InputPassword
-                    id="password"
-                    placeholder="Masukan password"
-                  />
-                </div>
-                <Button type="submit" className="w-full">
-                  Login
-                </Button>
-              </div>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input type="email" placeholder="m@student.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <InputPassword placeholder="Masukan password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormError message={error} />
+              <Button type="submit" className="w-full gap-2" disabled={loading}>
+                {loading && <LoaderCircle className="w-4 h-4 animate-spin" />}
+                Login
+              </Button>
               <div className="text-center text-sm">
                 Belum punya akun?{" "}
-                <a href="/register" className="underline underline-offset-4">
+                <Link href="/register" className="text-primary underline underline-offset-4">
                   Registrasi
-                </a>
+                </Link>
               </div>
-            </div>
-          </form>
+            </form>
+          </Form>
         </CardContent>
       </Card>
     </div>

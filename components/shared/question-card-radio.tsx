@@ -2,13 +2,9 @@
 
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Answer } from "@/lib/generated/prisma";
 import { cn } from "@/lib/utils";
 import React from "react";
-
-export type Answer = {
-  id: string;
-  text: string;
-};
 
 type QuestionCardRadioProps = {
   question?: string;
@@ -17,6 +13,8 @@ type QuestionCardRadioProps = {
   readOnly?: boolean;
   onSelectAnswer?: (id: string) => void;
   correctAnswer?: string;
+  imageUrl?: string | null;
+  imageLabel?: string | null;
   /** For custom question */
   children?: React.ReactNode;
 };
@@ -27,14 +25,28 @@ const QuestionCardRadio: React.FC<QuestionCardRadioProps> = ({
   selectedAnswer,
   onSelectAnswer,
   correctAnswer,
+  imageUrl,
+  imageLabel,
   children
 }) => {
   return (
     <div className="space-y-2 text-sm sm:text-base">
       {!!children ? children : (
-        <p className="font-medium">
-          {question || 'Question is empty'}
-        </p>
+        <div>
+          {!!imageUrl && (
+            <div className="pb-2 space-y-1.5">
+              <img
+                src={imageUrl}
+                alt="image-question"
+                className="object-contain mx-auto"
+              />
+              {imageLabel && <p className="text-center text-xs text-muted-foreground">{imageLabel}</p>}
+            </div>
+          )}
+          <p className="font-medium">
+            {question || 'Question is empty'}
+          </p>
+        </div>
       )}
       <div className="space-y-2">
         <RadioGroup
@@ -70,7 +82,7 @@ const QuestionCardRadio: React.FC<QuestionCardRadioProps> = ({
                   selectedAnswer === ans.id && !correctAnswer && 'font-semibold'
                 )}
               >
-                {ans.text}
+                {ans.answerText}
               </Label>
             </div>
           ))}

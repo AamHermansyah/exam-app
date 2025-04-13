@@ -4,9 +4,15 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { ReactNode } from "react";
 
-function LayoutDashboard({ children }: { children: ReactNode }) {
+async function LayoutDashboard({ children }: { children: ReactNode }) {
+  const token = (await cookies()).get('token');
+
+  if (!token?.value) redirect('/login');
+
   return (
     <SidebarProvider>
       <AppSidebar />

@@ -5,60 +5,31 @@ import QuestionCardCheckbox from '@/components/shared/question-card-checkbox'
 import QuestionCardRadio from '@/components/shared/question-card-radio'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
+import { Answer, Exam, ExamSubmission, Question, User } from '@/lib/generated/prisma'
+import Link from 'next/link'
+import { Badge } from '@/components/ui/badge'
 
-type Answer = {
-  id: string;
-  text: string;
-};
+interface IProps {
+  data: unknown;
+}
 
-type Question = {
-  type: 'checkbox' | 'radio';
-  question: string;
-  answers: Answer[];
-  correctAnswers: string[];
-  selectedAnswers: string[];
-};
+type ExamSubmissionType = ExamSubmission & {
+  exam: Pick<Exam, 'id' | 'title' | 'duration'> & {
+    questions: (Question & {
+      answers: (Answer & {
+        isSelectedByUser: boolean;
+      })[];
+    })[]
+  };
+  user: Pick<User, 'id' | 'fullName'>;
+}
 
-const questions: Question[] = [
-  {
-    type: 'checkbox',
-    question: "Apa saja warna primer?",
-    answers: [
-      { id: "merah", text: "Merah" },
-      { id: "biru", text: "Biru" },
-      { id: "kuning", text: "Kuning" },
-      { id: "hijau", text: "Hijau" },
-    ],
-    correctAnswers: ["merah", "biru", "kuning"],
-    selectedAnswers: ["merah", "biru"]
-  },
-  {
-    type: 'radio',
-    question: "Siapa presiden pertama Indonesia?",
-    answers: [
-      { id: "soekarno", text: "Soekarno" },
-      { id: "soeharto", text: "Soeharto" },
-      { id: "habibie", text: "B.J. Habibie" },
-      { id: "gusdur", text: "Abdurrahman Wahid" },
-    ],
-    correctAnswers: ["soekarno"],
-    selectedAnswers: ["soeharto"]
-  },
-  {
-    type: 'radio',
-    question: "Planet terdekat dari Matahari adalah?",
-    answers: [
-      { id: "venus", text: "Venus" },
-      { id: "bumi", text: "Bumi" },
-      { id: "merkurius", text: "Merkurius" },
-      { id: "mars", text: "Mars" },
-    ],
-    correctAnswers: ["merkurius"],
-    selectedAnswers: ["merkurius"],
-  },
-]
+function PreviewLayout({ data }: IProps) {
+  const examSubmission = data as ExamSubmissionType;
+  const questions = examSubmission.exam.questions;
 
-function PreviewLayout() {
+  console.log(examSubmission)
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const currentQuestion = questions[currentQuestionIndex]
 
@@ -69,29 +40,49 @@ function PreviewLayout() {
     <div className="w-full h-full flex flex-col justify-center items-center">
       <div className="w-full max-w-4xl mx-auto space-y-4">
         <div>
-          <Button variant="outline">
-            <ArrowLeft className="w-4 h-4" />
-            Kembali
-          </Button>
+          <Link href="/riwayat">
+            <Button variant="outline">
+              <ArrowLeft className="w-4 h-4" />
+              Kembali
+            </Button>
+          </Link>
         </div>
         <div className="space-y-1">
-          <h2 className="text-lg sm:text-xl font-medium">Matematika Dasar</h2>
+          <h2 className="text-lg sm:text-xl font-medium">{examSubmission.exam.title}</h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-2 gap-y-4 p-4 border rounded-lg shadow-sm bg-gray-50">
             <div>
               <p className="text-sm text-muted-foreground">Nama:</p>
-              <p className="font-medium">Jhon Doe</p>
+              <p className="font-medium">{examSubmission.user.fullName}</p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Skor:</p>
-              <p className="font-medium">60/100</p>
+              <p className="font-medium">{examSubmission.score}/100</p>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Durasi:</p>
-              <p className="font-medium">40 menit</p>
+              <p className="text-sm text-muted-foreground">Durasi Ujian:</p>
+              <p className="font-medium">{examSubmission.exam.duration} menit</p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Benar:</p>
+              <p className="font-medium">{examSubmission.correct} soal</p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Salah:</p>
+              <p className="font-medium">{examSubmission.incorrect} soal</p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Total Pertanyaan:</p>
+              <p className="font-medium">{questions.length} soal</p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Status:</p>
-              <p className="font-medium">Lulus</p>
+              <p className="font-medium">
+                {examSubmission.passed ? (
+                  <Badge variant="info" className="rounded-full">Lulus</Badge>
+                ) : (
+                  <Badge variant="destructive" className="rounded-full">Tidak Lulus</Badge>
+                )}
+              </p>
             </div>
           </div>
         </div>
@@ -102,19 +93,34 @@ function PreviewLayout() {
         </span>
 
         {/* Render Soal Sesuai Tipe */}
-        {currentQuestion.type === 'checkbox' ? (
+        {currentQuestion.type === 'CHECKBOX' ? (
           <QuestionCardCheckbox
-            question={currentQuestion.question}
+            question={currentQuestion.title}
             answers={currentQuestion.answers}
-            correctAnswers={currentQuestion.correctAnswers}
-            selectedAnswers={currentQuestion.selectedAnswers}
+            imageUrl={currentQuestion.image}
+            imageLabel={currentQuestion.imageLabel}
+            correctAnswers={
+              currentQuestion.answers
+                .filter((ans) => ans.isCorrect)
+                .map((ans) => ans.id)
+            }
+            selectedAnswers={
+              currentQuestion.answers
+                .filter((ans) => ans.isSelectedByUser)
+                .map((ans) => ans.id)
+            }
           />
         ) : (
           <QuestionCardRadio
-            question={currentQuestion.question}
+            question={currentQuestion.title}
             answers={currentQuestion.answers}
-            correctAnswer={currentQuestion.correctAnswers[0]}
-            selectedAnswer={currentQuestion.selectedAnswers[0]}
+            imageUrl={currentQuestion.image}
+            imageLabel={currentQuestion.imageLabel}
+            correctAnswer={currentQuestion.answers[currentQuestion.correctAnswerIndex!]?.id}
+            selectedAnswer={
+              currentQuestion.answers
+                .find((ans) => ans.isSelectedByUser)?.id
+            }
           />
         )}
 

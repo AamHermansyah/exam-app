@@ -1,0 +1,108 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String           @id @default(cuid())
+  fullName       String
+  email          String           @unique
+  purpose        String
+  institution    String
+  password       String
+  role           Role             @default(STUDENT)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  Exam           Exam[]
+  ExamSubmission ExamSubmission[]
+}
+
+model Exam {
+  id          String    @id @default(cuid())
+  title       String
+  tags        String
+  category    String
+  duration    Int
+  minScore    Int?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  publishedAt DateTime? // opsional: belum tentu langsung dipublish
+
+  // Relasi ke User
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
+
+  // Relasi ke Question
+  questions      Question[]
+  ExamSubmission ExamSubmission[]
+}
+
+model Question {
+  id         String       @id @default(cuid())
+  title      String
+  image      String? // Opsional (base64 string)
+  imageLabel String? // Opsional
+  type       QuestionType
+  examId     String
+  createdAt  DateTime     @default(now())
+
+  exam               Exam               @relation(fields: [examId], references: [id])
+  answers            Answer[]
+  correctAnswerIndex Int? // Hanya digunakan jika tipe soal "radio"
+  SubmissionAnswer   SubmissionAnswer[]
+}
+
+model Answer {
+  id         String   @id @default(cuid())
+  answerText String
+  isCorrect  Boolean
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id])
+}
+
+model ExamSubmission {
+  id          String   @id @default(cuid())
+  examId      String
+  userId      String
+  submittedAt DateTime @default(now())
+  expireAt    DateTime
+  score       Int?
+  correct     Int?
+  incorrect   Int?
+  passed      Boolean?
+
+  exam    Exam               @relation(fields: [examId], references: [id])
+  user    User               @relation(fields: [userId], references: [id])
+  answers SubmissionAnswer[]
+}
+
+model SubmissionAnswer {
+  id                String @id @default(cuid())
+  submissionId      String
+  questionId        String
+  selectedAnswerIds String // Simpan sebagai JSON stringified array
+
+  submission ExamSubmission @relation(fields: [submissionId], references: [id])
+  question   Question       @relation(fields: [questionId], references: [id])
+}
+
+enum QuestionType {
+  RADIO
+  CHECKBOX
+}
+
+enum Role {
+  TEACHER
+  STUDENT
+}

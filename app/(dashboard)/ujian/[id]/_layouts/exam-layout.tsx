@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState, useTransition } from 'react'
 import QuestionCardCheckbox from '@/components/shared/question-card-checkbox'
 import QuestionCardRadio from '@/components/shared/question-card-radio'
 import { Button } from '@/components/ui/button'
@@ -13,54 +13,38 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { ArrowLeft, ArrowRight } from 'lucide-react'
+import { ArrowLeft, ArrowRight, LoaderCircle } from 'lucide-react'
 import { useExamStore } from '../../_stores/use-exam-store'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
+import { Answer, Exam, ExamSubmission, Question } from '@/lib/generated/prisma'
+import { submitExam } from '@/actions/exam-submission'
 
-const questions = [
-  {
-    id: 'q-1',
-    type: 'checkbox',
-    question: "Apa saja warna primer?",
-    answers: [
-      { id: "merah", text: "Merah" },
-      { id: "biru", text: "Biru" },
-      { id: "kuning", text: "Kuning" },
-      { id: "hijau", text: "Hijau" },
-    ],
-  },
-  {
-    id: 'q-2',
-    type: 'radio',
-    question: "Siapa presiden pertama Indonesia?",
-    answers: [
-      { id: "soekarno", text: "Soekarno" },
-      { id: "soeharto", text: "Soeharto" },
-      { id: "habibie", text: "B.J. Habibie" },
-      { id: "gusdur", text: "Abdurrahman Wahid" },
-    ],
-  },
-  {
-    id: 'q-3',
-    type: 'radio',
-    question: "Planet terdekat dari Matahari adalah?",
-    answers: [
-      { id: "venus", text: "Venus" },
-      { id: "bumi", text: "Bumi" },
-      { id: "merkurius", text: "Merkurius" },
-      { id: "mars", text: "Mars" },
-    ],
-  },
-]
+interface IProps {
+  data: any;
+  token: string;
+}
 
-function ExamLayout() {
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-  const currentQuestion = questions[currentQuestionIndex]
-  const isFirst = currentQuestionIndex === 0
-  const isLast = currentQuestionIndex === questions.length - 1
-  const navigate = useRouter()
+type ExamPropType = Exam & {
+  questions: (Question & {
+    answers: Answer[];
+  })[];
+  ExamSubmission: ExamSubmission[];
+}
+
+function ExamLayout({ data, token }: IProps) {
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [loading, startServer] = useTransition();
+  const exam = data as ExamPropType;
+  const submission = exam.ExamSubmission[0];
+  const questions = exam.questions;
+
+  const currentQuestion = questions[currentQuestionIndex];
+  const isFirst = currentQuestionIndex === 0;
+  const isLast = currentQuestionIndex === questions.length - 1;
+  const remainingSeconds = Math.floor((new Date(submission.expireAt).getTime() - Date.now()) / 1000);
+  const navigate = useRouter();
 
   const {
     answers,
@@ -68,24 +52,77 @@ function ExamLayout() {
     countdown,
     startCountdown,
     tickCountdown,
-  } = useExamStore()
+    resetAnswers,
+    resetCountdown
+  } = useExamStore();
+
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const hours = Math.floor(countdown / 3600);
+  const minutes = Math.floor((countdown % 3600) / 60);
+  const seconds = countdown % 60;
 
   useEffect(() => {
-    startCountdown(3600) // contoh: 60 menit
-    const timer = setInterval(() => {
-      tickCountdown()
-    }, 1000)
-    return () => clearInterval(timer)
-  }, [])
+    startCountdown(remainingSeconds);
+
+    timerRef.current = setInterval(() => {
+      tickCountdown();
+    }, 1000);
+
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (countdown < 0 && timerRef.current) {
+      clearInterval(timerRef.current);
+      resetCountdown();
+      timerRef.current = null;
+    }
+  }, [countdown]);
+
+  useEffect(() => {
+    if (countdown === 5 * 60) {
+      toast.warning('Waktu tersisa 5 menit lagi!', {
+        duration: 5000
+      });
+    }
+  }, [countdown]);
 
   const handleSubmit = () => {
-    const unanswered = questions.filter(q => !answers[q.id] || answers[q.id].length === 0)
+    const unanswered = questions.filter(q => !answers[q.id] || answers[q.id]?.answerIds.length === 0)
     if (unanswered.length > 0) {
       toast.warning('Semua soal harus dijawab!');
       return
     }
-    console.log('Jawaban:', answers);
-    navigate.push('/riwayat');
+
+    const submitAnswers = Object.entries(answers).map(
+      ([questionId, value]) => ({
+        questionId,
+        selectedAnswerIds: value.answerIds
+      })
+    );
+
+    startServer(() => {
+      submitExam({
+        answers: submitAnswers,
+        examId: exam.id,
+        token
+      })
+        .then((data) => {
+          if (data.status === 'success') {
+            resetAnswers();
+            // @ts-ignore
+            navigate.push(`/ujian/${exam.id}/preview?submissionId=${data.data?.submissionId}`);
+          } else {
+            // @ts-ignore
+            toast.error(data.message!);
+          }
+        });
+    });
   }
 
   return (
@@ -96,7 +133,18 @@ function ExamLayout() {
           <div className="p-4 text-center border rounded-lg shadow-sm bg-gray-50">
             <h4 className="text-sm">Sisa Waktu</h4>
             <span className="text-2xl font-medium text-destructive">
-              {Math.floor(countdown / 60)}:{String(countdown % 60).padStart(2, '0')}
+              {hours > 0 && (
+                <>
+                  {String(hours).padStart(2, '0')}
+                  <span className="text-sm font-normal"> Jam </span>
+                </>
+              )}
+
+              {String(minutes).padStart(2, '0')}
+              <span className="text-sm font-normal"> Menit </span>
+
+              {String(seconds).padStart(2, '0')}
+              <span className="text-sm font-normal"> Detik</span>
             </span>
           </div>
         </div>
@@ -105,19 +153,23 @@ function ExamLayout() {
           Soal {currentQuestionIndex + 1} dari {questions.length}
         </span>
 
-        {currentQuestion.type === 'checkbox' ? (
+        {currentQuestion.type === 'CHECKBOX' ? (
           <QuestionCardCheckbox
-            question={currentQuestion.question}
+            question={currentQuestion.title}
             answers={currentQuestion.answers}
-            selectedAnswers={answers[currentQuestion.id] || []}
-            onSelectAnswer={(id) => setAnswer(currentQuestion.id, id, 'checkbox')}
+            imageUrl={currentQuestion.image}
+            imageLabel={currentQuestion.imageLabel}
+            selectedAnswers={answers[currentQuestion.id]?.answerIds || []}
+            onSelectAnswer={(id) => setAnswer(currentQuestion.id, id, 'CHECKBOX')}
           />
         ) : (
           <QuestionCardRadio
-            question={currentQuestion.question}
+            question={currentQuestion.title}
             answers={currentQuestion.answers}
-            selectedAnswer={answers[currentQuestion.id]?.[0] || ''}
-            onSelectAnswer={(id) => setAnswer(currentQuestion.id, id, 'radio')}
+            imageUrl={currentQuestion.image}
+            imageLabel={currentQuestion.imageLabel}
+            selectedAnswer={answers[currentQuestion.id]?.answerIds?.[0] || ''}
+            onSelectAnswer={(id) => setAnswer(currentQuestion.id, id, 'RADIO')}
           />
         )}
 
@@ -126,7 +178,7 @@ function ExamLayout() {
             variant="outline"
             className="gap-2"
             onClick={() => setCurrentQuestionIndex(prev => prev - 1)}
-            disabled={isFirst}
+            disabled={isFirst || loading}
           >
             <ArrowLeft className="w-4 h-4" />
             Previous
@@ -143,7 +195,7 @@ function ExamLayout() {
               <SelectGroup>
                 <SelectLabel>Soal</SelectLabel>
                 {questions.map((question, index) => {
-                  const isAnswered = !!answers[question.id] && answers[question.id].length > 0;
+                  const isAnswered = !!answers[question.id] && answers[question.id]?.answerIds.length > 0;
 
                   return (
                     <SelectItem
@@ -170,7 +222,8 @@ function ExamLayout() {
               <ArrowRight className="w-4 h-4" />
             </Button>
           ) : (
-            <Button className="gap-2" onClick={handleSubmit}>
+            <Button className="gap-2" onClick={handleSubmit} disabled={loading}>
+              {loading && <LoaderCircle className="w-4 h-4 animate-spin" />}
               Submit
             </Button>
           )}

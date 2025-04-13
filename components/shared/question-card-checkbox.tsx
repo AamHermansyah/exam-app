@@ -1,13 +1,9 @@
 'use client'
 
 import { Checkbox } from "@/components/ui/checkbox";
+import { Answer } from "@/lib/generated/prisma";
 import { cn } from "@/lib/utils";
 import React from "react";
-
-export type Answer = {
-  id: string;
-  text: string;
-};
 
 type QuestionCardCheckboxProps = {
   question?: string;
@@ -16,6 +12,8 @@ type QuestionCardCheckboxProps = {
   readOnly?: boolean;
   onSelectAnswer?: (id: string) => void;
   correctAnswers?: string[];
+  imageUrl?: string | null;
+  imageLabel?: string | null;
   /** For custom question */
   children?: React.ReactNode;
 };
@@ -26,6 +24,8 @@ const QuestionCardCheckbox: React.FC<QuestionCardCheckboxProps> = ({
   selectedAnswers = [],
   onSelectAnswer,
   correctAnswers = [],
+  imageUrl,
+  imageLabel,
   children
 }) => {
   return (
@@ -33,9 +33,21 @@ const QuestionCardCheckbox: React.FC<QuestionCardCheckboxProps> = ({
       {children ? (
         children
       ) : (
-        <p className="font-medium">
-          {question || 'Question is empty'}
-        </p>
+        <div>
+          {!!imageUrl && (
+            <div className="pb-2 space-y-1.5">
+              <img
+                src={imageUrl}
+                alt="image-question"
+                className="object-contain mx-auto"
+              />
+              {imageLabel && <p className="text-center text-xs text-muted-foreground">{imageLabel}</p>}
+            </div>
+          )}
+          <p className="font-medium">
+            {question || 'Question is empty'}
+          </p>
+        </div>
       )}
       <div className="space-y-2">
         {answers.map((ans) => {
@@ -71,7 +83,7 @@ const QuestionCardCheckbox: React.FC<QuestionCardCheckboxProps> = ({
                 'text-sm',
                 isSelected && !correctAnswers.length && 'font-semibold'
               )}>
-                {ans.text}
+                {ans.answerText}
               </span>
             </label>
           );
