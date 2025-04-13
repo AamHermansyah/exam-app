@@ -58,7 +58,7 @@ function UjianLayout({ data, token }: IProps) {
         </div>
         <div className="flex justify-center gap-2 flex-wrap mt-2">
           {data.tags.split(',').map((tag) => (
-            <Badge key={tag} className="bg-neutral-200 text-neutral-800">
+            <Badge key={tag} className="bg-neutral-200 text-neutral-800 hover:bg-neutral-200 capitalize">
               {tag.trim()}
             </Badge>
           ))}

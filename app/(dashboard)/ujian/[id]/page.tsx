@@ -25,7 +25,7 @@ async function UjianDetailPage({ params }: { params: Promise<Params> }) {
   if (!submission) redirect('/404', 'replace' as RedirectType);
 
   if (submission && (submission?.score !== null || isSubmissionExpired(submission?.expireAt))) {
-    redirect(`/ujian/${exam.id}/preview`, 'replace' as RedirectType);
+    redirect(`/ujian/${exam.id}/preview?submissionId=${submission.id}`, 'replace' as RedirectType);
   }
 
   return (

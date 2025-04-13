@@ -28,7 +28,7 @@ export function formatDate(date: Date, config?: { withTime?: boolean }): string 
     options.hour12 = false; // pakai format 24 jam, misal: 13:45
   }
 
-  return new Intl.DateTimeFormat('id-ID', options).format(date);
+  return new Intl.DateTimeFormat('id-ID', options).format(date).replace('pukul ', '');
 }
 
 export function isSubmissionExpired(expireAt?: Date | string): boolean {
@@ -37,6 +37,20 @@ export function isSubmissionExpired(expireAt?: Date | string): boolean {
   const now = new Date();
   const expireDate = new Date(expireAt);
   return expireDate.getTime() < now.getTime();
+}
+
+export const getBadgeVariantSubmissionStatus = (score: null | number, passed: null | boolean, expireAt: Date) => {
+  if (passed) return 'default';
+  else if (!passed && typeof score === 'number') return 'secondary';
+  else if (isSubmissionExpired(expireAt)) return 'destructive';
+  else return 'info';
+}
+
+export const getStatusLabel = (score: null | number, passed: null | boolean, expireAt: Date) => {
+  if (passed) return 'Lulus';
+  else if (!passed && typeof score === 'number') return 'Tidak Lulus';
+  else if (isSubmissionExpired(expireAt)) return 'Telat';
+  else return 'Berjalan';
 }
 
 export type ReturnError = { status: string; message: string };

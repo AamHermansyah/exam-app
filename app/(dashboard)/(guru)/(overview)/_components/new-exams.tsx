@@ -8,32 +8,56 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Eye, Pencil } from 'lucide-react';
-import Link from 'next/link';
-import { SearchParams } from 'next/dist/server/request/search-params';
-import { cookies } from 'next/headers';
+import { Badge } from "@/components/ui/badge";
 import { getAllExams } from '@/data/exam';
-import { Pagination } from '@/components/ui/pagination';
 import { formatDate } from '@/lib/utils';
 
-async function KelolaUjianPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
-  const page = (await searchParams).page;
-  const token = (await cookies()).get('token');
-  const { data: exams, ...pagination } = await getAllExams({
-    token: token?.value!,
-    page: typeof page === 'string' && !isNaN(+page) ? +page : 1
+const exams = [
+  {
+    id: 1,
+    name: "Mathematics Exam",
+    category: "Mathematics",
+    tags: ["Midterm", "Mandatory"],
+    questionCount: 40,
+    duration: "90 minutes",
+    totalParticipants: 120,
+    date: "March 20, 2025"
+  },
+  {
+    id: 2,
+    name: "Physics Exam",
+    category: "Science",
+    tags: ["Tryout"],
+    questionCount: 35,
+    duration: "75 minutes",
+    totalParticipants: 98,
+    date: "March 22, 2025"
+  },
+  {
+    id: 3,
+    name: "Chemistry Exam",
+    category: "Science",
+    tags: ["Final"],
+    questionCount: 50,
+    duration: "120 minutes",
+    totalParticipants: 85,
+    date: "March 25, 2025"
+  },
+];
+
+interface IProps {
+  token: string;
+}
+
+async function NewExams({ token }: IProps) {
+  const { data: exams } = await getAllExams({
+    token,
+    page: 1
   });
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h3 className="font-semibold text-lg">Kelola Ujian</h3>
-        <Link href="/kelola-ujian/tambah">
-          <Button className="bg-primary text-white">Tambah Ujian</Button>
-        </Link>
-      </div>
+      <h3 className="font-semibold text-lg">Ujian Terbaru</h3>
       <Table className="w-full overflow-x-auto border">
         <TableCaption>Daftar ujian yang tersedia dalam sistem.</TableCaption>
         <TableHeader>
@@ -45,8 +69,7 @@ async function KelolaUjianPage({ searchParams }: { searchParams: Promise<SearchP
             <TableHead className="py-4">Jumlah Soal</TableHead>
             <TableHead className="py-4">Durasi</TableHead>
             <TableHead className="py-4">Total Peserta</TableHead>
-            <TableHead className="py-4">Tanggal</TableHead>
-            <TableHead className="pr-4 py-4 text-center">Aksi</TableHead>
+            <TableHead className="pr-4 py-4 ">Tanggal</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -73,31 +96,12 @@ async function KelolaUjianPage({ searchParams }: { searchParams: Promise<SearchP
               <TableCell className="py-4">{exam.duration} Menit</TableCell>
               <TableCell className="py-4">{exam._count.ExamSubmission} Submit</TableCell>
               <TableCell className="py-4">{formatDate(exam.createdAt, { withTime: true })}</TableCell>
-              <TableCell className="pr-4 py-4 text-center space-x-2">
-                <Link href={`/kelola-ujian/edit?id=${exam.id}`} target="_blank">
-                  <Button variant="outline" size="icon">
-                    <Pencil className="w-4 h-4" />
-                  </Button>
-                </Link>
-                <Link href={`/kelola-ujian/${exam.id}`} target="_blank">
-                  <Button variant="outline" size="icon">
-                    <Eye className="w-4 h-4" />
-                  </Button>
-                </Link>
-              </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      <div className="w-full flex justify-end">
-        <Pagination
-          className="w-max"
-          page={pagination.page}
-          pages={pagination.totalPages}
-        />
-      </div>
     </div>
-  )
+  );
 }
 
-export default KelolaUjianPage
+export default NewExams;

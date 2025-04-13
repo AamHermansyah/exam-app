@@ -6140,6 +6140,7 @@ export namespace Prisma {
     correct: number | null
     incorrect: number | null
     passed: boolean | null
+    updatedAt: Date | null
   }
 
   export type ExamSubmissionMaxAggregateOutputType = {
@@ -6152,6 +6153,7 @@ export namespace Prisma {
     correct: number | null
     incorrect: number | null
     passed: boolean | null
+    updatedAt: Date | null
   }
 
   export type ExamSubmissionCountAggregateOutputType = {
@@ -6164,6 +6166,7 @@ export namespace Prisma {
     correct: number
     incorrect: number
     passed: number
+    updatedAt: number
     _all: number
   }
 
@@ -6190,6 +6193,7 @@ export namespace Prisma {
     correct?: true
     incorrect?: true
     passed?: true
+    updatedAt?: true
   }
 
   export type ExamSubmissionMaxAggregateInputType = {
@@ -6202,6 +6206,7 @@ export namespace Prisma {
     correct?: true
     incorrect?: true
     passed?: true
+    updatedAt?: true
   }
 
   export type ExamSubmissionCountAggregateInputType = {
@@ -6214,6 +6219,7 @@ export namespace Prisma {
     correct?: true
     incorrect?: true
     passed?: true
+    updatedAt?: true
     _all?: true
   }
 
@@ -6313,6 +6319,7 @@ export namespace Prisma {
     correct: number | null
     incorrect: number | null
     passed: boolean | null
+    updatedAt: Date
     _count: ExamSubmissionCountAggregateOutputType | null
     _avg: ExamSubmissionAvgAggregateOutputType | null
     _sum: ExamSubmissionSumAggregateOutputType | null
@@ -6344,6 +6351,7 @@ export namespace Prisma {
     correct?: boolean
     incorrect?: boolean
     passed?: boolean
+    updatedAt?: boolean
     exam?: boolean | ExamDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     answers?: boolean | ExamSubmission$answersArgs<ExtArgs>
@@ -6360,6 +6368,7 @@ export namespace Prisma {
     correct?: boolean
     incorrect?: boolean
     passed?: boolean
+    updatedAt?: boolean
     exam?: boolean | ExamDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["examSubmission"]>
@@ -6374,6 +6383,7 @@ export namespace Prisma {
     correct?: boolean
     incorrect?: boolean
     passed?: boolean
+    updatedAt?: boolean
     exam?: boolean | ExamDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["examSubmission"]>
@@ -6388,9 +6398,10 @@ export namespace Prisma {
     correct?: boolean
     incorrect?: boolean
     passed?: boolean
+    updatedAt?: boolean
   }
 
-  export type ExamSubmissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "examId" | "userId" | "submittedAt" | "expireAt" | "score" | "correct" | "incorrect" | "passed", ExtArgs["result"]["examSubmission"]>
+  export type ExamSubmissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "examId" | "userId" | "submittedAt" | "expireAt" | "score" | "correct" | "incorrect" | "passed" | "updatedAt", ExtArgs["result"]["examSubmission"]>
   export type ExamSubmissionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     exam?: boolean | ExamDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -6423,6 +6434,7 @@ export namespace Prisma {
       correct: number | null
       incorrect: number | null
       passed: boolean | null
+      updatedAt: Date
     }, ExtArgs["result"]["examSubmission"]>
     composites: {}
   }
@@ -6858,6 +6870,7 @@ export namespace Prisma {
     readonly correct: FieldRef<"ExamSubmission", 'Int'>
     readonly incorrect: FieldRef<"ExamSubmission", 'Int'>
     readonly passed: FieldRef<"ExamSubmission", 'Boolean'>
+    readonly updatedAt: FieldRef<"ExamSubmission", 'DateTime'>
   }
     
 
@@ -8427,7 +8440,8 @@ export namespace Prisma {
     score: 'score',
     correct: 'correct',
     incorrect: 'incorrect',
-    passed: 'passed'
+    passed: 'passed',
+    updatedAt: 'updatedAt'
   };
 
   export type ExamSubmissionScalarFieldEnum = (typeof ExamSubmissionScalarFieldEnum)[keyof typeof ExamSubmissionScalarFieldEnum]
@@ -8873,6 +8887,7 @@ export namespace Prisma {
     correct?: IntNullableFilter<"ExamSubmission"> | number | null
     incorrect?: IntNullableFilter<"ExamSubmission"> | number | null
     passed?: BoolNullableFilter<"ExamSubmission"> | boolean | null
+    updatedAt?: DateTimeFilter<"ExamSubmission"> | Date | string
     exam?: XOR<ExamScalarRelationFilter, ExamWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     answers?: SubmissionAnswerListRelationFilter
@@ -8888,6 +8903,7 @@ export namespace Prisma {
     correct?: SortOrderInput | SortOrder
     incorrect?: SortOrderInput | SortOrder
     passed?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
     exam?: ExamOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
     answers?: SubmissionAnswerOrderByRelationAggregateInput
@@ -8906,6 +8922,7 @@ export namespace Prisma {
     correct?: IntNullableFilter<"ExamSubmission"> | number | null
     incorrect?: IntNullableFilter<"ExamSubmission"> | number | null
     passed?: BoolNullableFilter<"ExamSubmission"> | boolean | null
+    updatedAt?: DateTimeFilter<"ExamSubmission"> | Date | string
     exam?: XOR<ExamScalarRelationFilter, ExamWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     answers?: SubmissionAnswerListRelationFilter
@@ -8921,6 +8938,7 @@ export namespace Prisma {
     correct?: SortOrderInput | SortOrder
     incorrect?: SortOrderInput | SortOrder
     passed?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
     _count?: ExamSubmissionCountOrderByAggregateInput
     _avg?: ExamSubmissionAvgOrderByAggregateInput
     _max?: ExamSubmissionMaxOrderByAggregateInput
@@ -8941,6 +8959,7 @@ export namespace Prisma {
     correct?: IntNullableWithAggregatesFilter<"ExamSubmission"> | number | null
     incorrect?: IntNullableWithAggregatesFilter<"ExamSubmission"> | number | null
     passed?: BoolNullableWithAggregatesFilter<"ExamSubmission"> | boolean | null
+    updatedAt?: DateTimeWithAggregatesFilter<"ExamSubmission"> | Date | string
   }
 
   export type SubmissionAnswerWhereInput = {
@@ -9326,6 +9345,7 @@ export namespace Prisma {
     correct?: number | null
     incorrect?: number | null
     passed?: boolean | null
+    updatedAt?: Date | string
     exam: ExamCreateNestedOneWithoutExamSubmissionInput
     user: UserCreateNestedOneWithoutExamSubmissionInput
     answers?: SubmissionAnswerCreateNestedManyWithoutSubmissionInput
@@ -9341,6 +9361,7 @@ export namespace Prisma {
     correct?: number | null
     incorrect?: number | null
     passed?: boolean | null
+    updatedAt?: Date | string
     answers?: SubmissionAnswerUncheckedCreateNestedManyWithoutSubmissionInput
   }
 
@@ -9352,6 +9373,7 @@ export namespace Prisma {
     correct?: NullableIntFieldUpdateOperationsInput | number | null
     incorrect?: NullableIntFieldUpdateOperationsInput | number | null
     passed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     exam?: ExamUpdateOneRequiredWithoutExamSubmissionNestedInput
     user?: UserUpdateOneRequiredWithoutExamSubmissionNestedInput
     answers?: SubmissionAnswerUpdateManyWithoutSubmissionNestedInput
@@ -9367,6 +9389,7 @@ export namespace Prisma {
     correct?: NullableIntFieldUpdateOperationsInput | number | null
     incorrect?: NullableIntFieldUpdateOperationsInput | number | null
     passed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     answers?: SubmissionAnswerUncheckedUpdateManyWithoutSubmissionNestedInput
   }
 
@@ -9380,6 +9403,7 @@ export namespace Prisma {
     correct?: number | null
     incorrect?: number | null
     passed?: boolean | null
+    updatedAt?: Date | string
   }
 
   export type ExamSubmissionUpdateManyMutationInput = {
@@ -9390,6 +9414,7 @@ export namespace Prisma {
     correct?: NullableIntFieldUpdateOperationsInput | number | null
     incorrect?: NullableIntFieldUpdateOperationsInput | number | null
     passed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ExamSubmissionUncheckedUpdateManyInput = {
@@ -9402,6 +9427,7 @@ export namespace Prisma {
     correct?: NullableIntFieldUpdateOperationsInput | number | null
     incorrect?: NullableIntFieldUpdateOperationsInput | number | null
     passed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SubmissionAnswerCreateInput = {
@@ -9900,6 +9926,7 @@ export namespace Prisma {
     correct?: SortOrder
     incorrect?: SortOrder
     passed?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type ExamSubmissionAvgOrderByAggregateInput = {
@@ -9918,6 +9945,7 @@ export namespace Prisma {
     correct?: SortOrder
     incorrect?: SortOrder
     passed?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type ExamSubmissionMinOrderByAggregateInput = {
@@ -9930,6 +9958,7 @@ export namespace Prisma {
     correct?: SortOrder
     incorrect?: SortOrder
     passed?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type ExamSubmissionSumOrderByAggregateInput = {
@@ -10706,6 +10735,7 @@ export namespace Prisma {
     correct?: number | null
     incorrect?: number | null
     passed?: boolean | null
+    updatedAt?: Date | string
     exam: ExamCreateNestedOneWithoutExamSubmissionInput
     answers?: SubmissionAnswerCreateNestedManyWithoutSubmissionInput
   }
@@ -10719,6 +10749,7 @@ export namespace Prisma {
     correct?: number | null
     incorrect?: number | null
     passed?: boolean | null
+    updatedAt?: Date | string
     answers?: SubmissionAnswerUncheckedCreateNestedManyWithoutSubmissionInput
   }
 
@@ -10793,6 +10824,7 @@ export namespace Prisma {
     correct?: IntNullableFilter<"ExamSubmission"> | number | null
     incorrect?: IntNullableFilter<"ExamSubmission"> | number | null
     passed?: BoolNullableFilter<"ExamSubmission"> | boolean | null
+    updatedAt?: DateTimeFilter<"ExamSubmission"> | Date | string
   }
 
   export type UserCreateWithoutExamInput = {
@@ -10868,6 +10900,7 @@ export namespace Prisma {
     correct?: number | null
     incorrect?: number | null
     passed?: boolean | null
+    updatedAt?: Date | string
     user: UserCreateNestedOneWithoutExamSubmissionInput
     answers?: SubmissionAnswerCreateNestedManyWithoutSubmissionInput
   }
@@ -10881,6 +10914,7 @@ export namespace Prisma {
     correct?: number | null
     incorrect?: number | null
     passed?: boolean | null
+    updatedAt?: Date | string
     answers?: SubmissionAnswerUncheckedCreateNestedManyWithoutSubmissionInput
   }
 
@@ -11395,6 +11429,7 @@ export namespace Prisma {
     correct?: number | null
     incorrect?: number | null
     passed?: boolean | null
+    updatedAt?: Date | string
     exam: ExamCreateNestedOneWithoutExamSubmissionInput
     user: UserCreateNestedOneWithoutExamSubmissionInput
   }
@@ -11409,6 +11444,7 @@ export namespace Prisma {
     correct?: number | null
     incorrect?: number | null
     passed?: boolean | null
+    updatedAt?: Date | string
   }
 
   export type ExamSubmissionCreateOrConnectWithoutAnswersInput = {
@@ -11464,6 +11500,7 @@ export namespace Prisma {
     correct?: NullableIntFieldUpdateOperationsInput | number | null
     incorrect?: NullableIntFieldUpdateOperationsInput | number | null
     passed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     exam?: ExamUpdateOneRequiredWithoutExamSubmissionNestedInput
     user?: UserUpdateOneRequiredWithoutExamSubmissionNestedInput
   }
@@ -11478,6 +11515,7 @@ export namespace Prisma {
     correct?: NullableIntFieldUpdateOperationsInput | number | null
     incorrect?: NullableIntFieldUpdateOperationsInput | number | null
     passed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type QuestionUpsertWithoutSubmissionAnswerInput = {
@@ -11536,6 +11574,7 @@ export namespace Prisma {
     correct?: number | null
     incorrect?: number | null
     passed?: boolean | null
+    updatedAt?: Date | string
   }
 
   export type ExamUpdateWithoutAuthorInput = {
@@ -11586,6 +11625,7 @@ export namespace Prisma {
     correct?: NullableIntFieldUpdateOperationsInput | number | null
     incorrect?: NullableIntFieldUpdateOperationsInput | number | null
     passed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     exam?: ExamUpdateOneRequiredWithoutExamSubmissionNestedInput
     answers?: SubmissionAnswerUpdateManyWithoutSubmissionNestedInput
   }
@@ -11599,6 +11639,7 @@ export namespace Prisma {
     correct?: NullableIntFieldUpdateOperationsInput | number | null
     incorrect?: NullableIntFieldUpdateOperationsInput | number | null
     passed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     answers?: SubmissionAnswerUncheckedUpdateManyWithoutSubmissionNestedInput
   }
 
@@ -11611,6 +11652,7 @@ export namespace Prisma {
     correct?: NullableIntFieldUpdateOperationsInput | number | null
     incorrect?: NullableIntFieldUpdateOperationsInput | number | null
     passed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type QuestionCreateManyExamInput = {
@@ -11632,6 +11674,7 @@ export namespace Prisma {
     correct?: number | null
     incorrect?: number | null
     passed?: boolean | null
+    updatedAt?: Date | string
   }
 
   export type QuestionUpdateWithoutExamInput = {
@@ -11676,6 +11719,7 @@ export namespace Prisma {
     correct?: NullableIntFieldUpdateOperationsInput | number | null
     incorrect?: NullableIntFieldUpdateOperationsInput | number | null
     passed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutExamSubmissionNestedInput
     answers?: SubmissionAnswerUpdateManyWithoutSubmissionNestedInput
   }
@@ -11689,6 +11733,7 @@ export namespace Prisma {
     correct?: NullableIntFieldUpdateOperationsInput | number | null
     incorrect?: NullableIntFieldUpdateOperationsInput | number | null
     passed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     answers?: SubmissionAnswerUncheckedUpdateManyWithoutSubmissionNestedInput
   }
 
@@ -11701,6 +11746,7 @@ export namespace Prisma {
     correct?: NullableIntFieldUpdateOperationsInput | number | null
     incorrect?: NullableIntFieldUpdateOperationsInput | number | null
     passed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AnswerCreateManyQuestionInput = {

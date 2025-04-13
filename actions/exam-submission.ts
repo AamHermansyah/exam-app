@@ -3,7 +3,7 @@
 import { dotEnvs } from "@/constants";
 import prisma from "@/lib/db";
 import { handleCatchError, isSubmissionExpired } from "@/lib/utils";
-import { TokenPayload } from "@/types";
+import { FetchParams, TokenPayload } from "@/types";
 import jwt from "jsonwebtoken";
 
 type CreateExamSubmissionInput = {
@@ -149,80 +149,5 @@ export async function submitExam({ token, examId, answers }: SubmitExamInput) {
     };
   } catch (error: any) {
     return handleCatchError(error, 'return');
-  }
-}
-
-export async function getExamSubmissionDetail(submissionId: string, token: string) {
-  try {
-    const decoded = jwt.verify(token, dotEnvs.jwtSecret as string) as TokenPayload;
-
-    const submission = await prisma.examSubmission.findUnique({
-      where: { id: submissionId },
-      include: {
-        exam: {
-          include: {
-            questions: {
-              include: { answers: true },
-            },
-          },
-        },
-        answers: true, // jawaban yang dipilih user
-        user: { select: { id: true, fullName: true } }
-      },
-    });
-
-    if (!submission) {
-      return {
-        status: 'success',
-        data: null,
-      };
-    }
-
-    if (submission.userId !== decoded.id) {
-      return {
-        status: 'success',
-        data: null,
-      };
-    }
-
-    // mapping jawaban user ke dalam struktur soal
-    const questionMap = submission.exam.questions.map((q) => {
-      const userAnswer = submission.answers.find(
-        (a) => a.questionId === q.id
-      );
-
-      const selectedAnswerIds = userAnswer
-        ? JSON.parse(userAnswer.selectedAnswerIds) as string[]
-        : [];
-
-      return {
-        ...q,
-        answers: q.answers.map((ans) => ({
-          ...ans,
-          isSelectedByUser: selectedAnswerIds.includes(ans.id),
-        })),
-      };
-    });
-
-    return {
-      status: 'success',
-      data: {
-        id: submission.id,
-        score: submission.score,
-        correct: submission.correct,
-        incorrect: submission.incorrect,
-        passed: submission.passed,
-        submittedAt: submission.submittedAt,
-        exam: {
-          id: submission.exam.id,
-          title: submission.exam.title,
-          questions: questionMap,
-          duration: submission.exam.duration
-        },
-        user: submission.user
-      },
-    };
-  } catch (error) {
-    throw new Error(handleCatchError(error, 'throw'));
   }
 }

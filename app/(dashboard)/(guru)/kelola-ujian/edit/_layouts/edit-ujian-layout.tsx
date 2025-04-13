@@ -55,7 +55,7 @@ export default function EditUjianLayout({ token, data }: IProps) {
             </div>
             <div className="space-y-1">
               <h2 className="text-sm text-primary">Skor Minimal</h2>
-              <p className="font-medium leading-none">{exam.minScore}/100%</p>
+              <p className="font-medium leading-none">{exam.minScore}/100</p>
             </div>
             <div className="space-y-1">
               <h2 className="text-sm text-primary">Kategori</h2>
@@ -67,12 +67,12 @@ export default function EditUjianLayout({ token, data }: IProps) {
           <div className="space-y-1">
             <h2 className="text-sm text-primary">Tags</h2>
             <div className="w-full flex gap-2 items-center flex-wrap">
-              {exam.tags.split(',').map((category) => (
+              {exam.tags.split(',').map((tag) => (
                 <Badge
                   key={crypto.randomUUID()}
                   className="rounded bg-neutral-200 text-neutral-900 hover:bg-neutral-200 capitalize"
                 >
-                  {category}
+                  {tag.trim()}
                 </Badge>
               ))}
             </div>

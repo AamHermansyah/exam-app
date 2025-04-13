@@ -12,6 +12,41 @@ type GetExamInput = {
   includeSubmission?: boolean;
 };
 
+export async function getExamDetailById(examId: string, token: string) {
+  try {
+    // Verifikasi token
+    const decoded = jwt.verify(token, dotEnvs.jwtSecret) as TokenPayload;
+
+    if (decoded.role !== 'TEACHER') {
+      throw new Error('Unauthorized access');
+    }
+
+    // Ambil data exam lengkap
+    const exam = await prisma.exam.findUnique({
+      where: { id: examId },
+      include: {
+        _count: {
+          select: {
+            questions: true,
+            ExamSubmission: true
+          }
+        }
+      },
+    });
+
+    if (!exam) {
+      throw new Error('Data not found');
+    }
+
+    return {
+      status: 'success',
+      data: exam,
+    };
+  } catch (error: any) {
+    throw new Error(handleCatchError(error, 'throw'));
+  }
+}
+
 export async function getExamById({
   token,
   examId,
@@ -66,13 +101,10 @@ export async function getExamById({
 
 export async function getAllPublishExams({ token, page = 1, pageSize = 10 }: FetchParams) {
   try {
-    // Verifikasi token
     const decoded = jwt.verify(token, dotEnvs.jwtSecret as string) as TokenPayload;
 
-    // Hitung offset untuk pagination
     const skip = (page - 1) * pageSize;
 
-    // Ambil data user dari database
     const publishExams = await prisma.exam.findMany({
       where: { publishedAt: { not: null } },
       skip,
@@ -81,30 +113,26 @@ export async function getAllPublishExams({ token, page = 1, pageSize = 10 }: Fet
         createdAt: 'desc',
       },
       include: {
-        // Hitung jumlah submission untuk setiap ujian
         _count: {
           select: { ExamSubmission: true },
         },
-        // Relasi untuk memeriksa apakah pengguna telah mengirimkan ujian
         ExamSubmission: {
           where: { userId: decoded.id },
         },
       },
     });
 
-    // Hitung total user
     const totalPublishExams = await prisma.exam.count({
       where: { publishedAt: { not: null } },
     });
 
-    // Format data untuk menambahkan jumlah submission dan status submit
     const examsWithSubmissionStatus = publishExams.map((exam) => {
       const hasSubmitted = exam.ExamSubmission.length > 0;
 
       return {
         ...exam,
-        submissionCount: exam._count.ExamSubmission, // Menambahkan jumlah pengiriman ujian
-        hasSubmitted, // Menambahkan status apakah pengguna sudah submit atau belum
+        submissionCount: exam._count.ExamSubmission,
+        hasSubmitted,
       };
     });
 
@@ -114,6 +142,51 @@ export async function getAllPublishExams({ token, page = 1, pageSize = 10 }: Fet
       page,
       pageSize,
       totalPages: Math.ceil(totalPublishExams / pageSize),
+    };
+  } catch (error: any) {
+    throw new Error(handleCatchError(error, 'throw'));
+  }
+}
+
+export async function getAllExams({ token, page = 1, pageSize = 10 }: FetchParams) {
+  try {
+    // Verifikasi token
+    const decoded = jwt.verify(token, dotEnvs.jwtSecret as string) as TokenPayload;
+
+    if (decoded.role !== 'TEACHER') {
+      throw new Error('Unauthorized');
+    }
+
+    // Hitung offset untuk pagination
+    const skip = (page - 1) * pageSize;
+
+    // Ambil data user dari database
+    const exams = await prisma.exam.findMany({
+      skip,
+      take: pageSize,
+      orderBy: {
+        createdAt: 'desc',
+      },
+      include: {
+        // Hitung jumlah submission untuk setiap ujian
+        _count: {
+          select: {
+            questions: true,
+            ExamSubmission: true
+          },
+        },
+      },
+    });
+
+    // Hitung total user
+    const totalExams = await prisma.exam.count();
+
+    return {
+      data: exams,
+      total: totalExams,
+      page,
+      pageSize,
+      totalPages: Math.ceil(totalExams / pageSize),
     };
   } catch (error: any) {
     throw new Error(handleCatchError(error, 'throw'));

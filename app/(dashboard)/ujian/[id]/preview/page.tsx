@@ -1,7 +1,7 @@
 import React from 'react'
 import PreviewLayout from '../_layouts/preview-layout'
 import { SearchParams } from 'next/dist/server/request/search-params';
-import { getExamSubmissionDetail } from '@/actions/exam-submission';
+import { getExamSubmissionDetail } from '@/data/exam-submission';
 import { cookies } from 'next/headers';
 import { redirect, RedirectType } from 'next/navigation';
 

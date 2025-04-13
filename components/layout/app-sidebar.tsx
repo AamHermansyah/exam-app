@@ -16,18 +16,16 @@ import {
 } from "@/components/ui/sidebar"
 import Link from "next/link"
 import { navigations } from "@/constants"
-import { cn } from "@/lib/utils"
 import { usePathname } from "next/navigation"
 import Image from "next/image"
+import { User } from "@/lib/generated/prisma"
 
-const user = {
-  name: "Jhon Doe",
-  email: "m@student.com",
-  avatar: "/avatars/shadcn.jpg",
+type TProps = React.ComponentProps<typeof Sidebar> & {
+  user: Omit<User, 'password' | 'updatedAt'>
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { state, isMobile } = useSidebar();
+export function AppSidebar({ user, ...props }: TProps) {
+  const { state } = useSidebar();
   const pathname = usePathname();
 
   return (
@@ -49,28 +47,32 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </div>
       </SidebarHeader>
       <SidebarContent>
-        {(Object.keys(navigations) as Array<keyof typeof navigations>).map((key) => (
-          <SidebarGroup key={key}>
-            <SidebarGroupLabel className="uppercase text-primary">{key}</SidebarGroupLabel>
-            <SidebarMenu>
-              {navigations[key].map((item) => (
-                <Link key={item.title} href={item.url}>
-                  <SidebarMenuButton
-                    variant="primary"
-                    tooltip={item.title}
-                    isActive={
-                      (pathname === '/' && item.url === '/')
-                      || (item.url !== '/' && pathname.includes(item.url))}
-                    className="cursor-pointer"
-                  >
-                    {item.icon && <item.icon />}
-                    <span>{item.title}</span>
-                  </SidebarMenuButton>
-                </Link>
-              ))}
-            </SidebarMenu>
-          </SidebarGroup>
-        ))}
+        {(Object.keys(navigations) as Array<keyof typeof navigations>).map((key) => {
+          if (key === 'guru' && user.role === 'STUDENT') return null;
+
+          return (
+            <SidebarGroup key={`sb-${key}`}>
+              <SidebarGroupLabel className="uppercase text-primary">{key}</SidebarGroupLabel>
+              <SidebarMenu>
+                {navigations[key].map((item) => (
+                  <Link key={item.title} href={item.url}>
+                    <SidebarMenuButton
+                      variant="primary"
+                      tooltip={item.title}
+                      isActive={
+                        (pathname === '/' && item.url === '/')
+                        || (item.url !== '/' && pathname.includes(item.url))}
+                      className="cursor-pointer"
+                    >
+                      {item.icon && <item.icon />}
+                      <span>{item.title}</span>
+                    </SidebarMenuButton>
+                  </Link>
+                ))}
+              </SidebarMenu>
+            </SidebarGroup>
+          )
+        })}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={user} />

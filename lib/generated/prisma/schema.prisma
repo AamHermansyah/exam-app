@@ -81,6 +81,7 @@ model ExamSubmission {
   correct     Int?
   incorrect   Int?
   passed      Boolean?
+  updatedAt   DateTime @updatedAt
 
   exam    Exam               @relation(fields: [examId], references: [id])
   user    User               @relation(fields: [userId], references: [id])

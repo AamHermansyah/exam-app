@@ -1,55 +1,130 @@
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+'use client'
 
-function ProfilDetail() {
+import { Input } from "@/components/ui/input"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { User } from "@/lib/generated/prisma";
+import { profileSchema, ProfileSchemaType } from "@/schemas/profile";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
+import { FormError } from "@/components/shared/form-error";
+import { Button } from "@/components/ui/button";
+import { LoaderCircle } from "lucide-react";
+import { updateUser } from "@/actions/user";
+import { toast } from "sonner";
+
+interface IProps {
+  user: Omit<User, 'password' | 'updatedAt'>;
+  token: string;
+}
+
+function ProfileDetail({ user, token }: IProps) {
+  const [loading, startServer] = useTransition();
+  const [error, setError] = useState("");
+
+  const form = useForm<ProfileSchemaType>({
+    resolver: zodResolver(profileSchema),
+    defaultValues: {
+      fullName: user.fullName,
+      email: user.email,
+      purpose: user.purpose,
+      institution: user.institution,
+    },
+  });
+
+  function onSubmit(values: ProfileSchemaType) {
+    setError("");
+    startServer(() => {
+      updateUser(values, token)
+        .then((data) => {
+          if (data.status === 'success') {
+            toast.success('Profile berhasil di update!');
+            window.location.reload();
+          } else {
+            // @ts-ignore
+            setError(data.message!);
+          }
+        });
+    });
+  }
+
   return (
-    <div className="px-4 py-6 border rounded-md">
-      <form action="" className="space-y-4">
+    <div className="w-full px-4 py-6 border rounded-md">
+      <div className="space-y-4">
         <h3 className="font-semibold leading-none">
           Informasi Pribadi
         </h3>
-        <div className="grid w-full items-center gap-y-2">
-          <Label htmlFor="name" className="font-semibold">Nama Lengkap</Label>
-          <Input
-            type="text"
-            id="name"
-            placeholder="Masukan nama lengkap"
-            defaultValue="Jhon Doe"
-            readOnly
-          />
-        </div>
-        <div className="grid w-full items-center gap-y-2">
-          <Label htmlFor="email" className="font-semibold">Email</Label>
-          <Input
-            type="email"
-            id="email"
-            placeholder="Masukan email"
-            defaultValue="m@student.com"
-            readOnly
-          />
-        </div>
-        <div className="grid w-full items-center gap-y-2">
-          <Label htmlFor="email" className="font-semibold">Role</Label>
-          <Select disabled defaultValue="siswa">
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Role anda" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="siswa">Siswa</SelectItem>
-              <SelectItem value="guru">Guru</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </form>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+            <FormField
+              control={form.control}
+              name="fullName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    {user.role === 'STUDENT' ? 'Nama Lengkap' : 'Nama & Gelar'}
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder={`Jhon Doe ${user.role === 'TEACHER' ? 'S.Pd.' : ''}`}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input type="email" placeholder="m@student.com" disabled {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="purpose"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Tujuan Penggunaan</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Co: Untuk belajar mandiri" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="institution"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Asal Instansi</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Co: Universitas Indonesia" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormError message={error} />
+            <div className="space-y-1">
+              <Button type="submit" className="w-full gap-2" disabled={loading}>
+                {loading && <LoaderCircle className="w-4 h-4 animate-spin" />}
+                Update
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </div>
     </div>
   )
 }
 
-export default ProfilDetail
+export default ProfileDetail

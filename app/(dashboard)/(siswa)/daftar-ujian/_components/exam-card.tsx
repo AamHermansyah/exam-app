@@ -24,7 +24,6 @@ function ExamCard({ data }: IProps) {
   return (
     <div className="p-4 rounded-md border shadow-sm hover:shadow-md transition">
       <div className="w-full h-full flex flex-col justify-between gap-4">
-        {/* Gambar atau ikon ujian */}
         <div className="relative w-full min-h-[200px] flex-1 rounded-md bg-primary/10 flex justify-center items-center">
           {Icon && (
             <Icon className="w-20 h-20 text-primary" />
@@ -33,32 +32,24 @@ function ExamCard({ data }: IProps) {
             <Users className="w-4 h-4" /> {data.submissionCount} Submit
           </span>
         </div>
-
-        {/* Info utama */}
         <div className="space-y-2">
           <h2 className="text-lg font-bold">{data.title}</h2>
-
-          {/* Kategori */}
           <div className="flex items-center gap-2 text-sm text-muted-foreground capitalize">
             <FileText className="w-4 h-4" />
             {data.category.replaceAll('-', ' ')}
           </div>
-
-          {/* Durasi */}
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Clock3 className="w-4 h-4" />
             {data.duration} menit
           </div>
-
-          {/* Tags */}
           <div className="w-full flex gap-2 items-center flex-wrap">
             {data.tags.split(',').map((tag) => (
               <Badge
                 key={crypto.randomUUID()}
-                className="rounded bg-neutral-200 text-neutral-900 hover:bg-neutral-200"
+                className="rounded bg-neutral-200 text-neutral-900 hover:bg-neutral-200 capitalize"
               >
                 <Tag className="w-3 h-3 mr-1" />
-                {tag}
+                {tag.trim()}
               </Badge>
             ))}
           </div>

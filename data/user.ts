@@ -1,16 +1,12 @@
 import { dotEnvs } from '@/constants';
 import prisma from '@/lib/db';
-import { FetchParams } from '@/types';
+import { FetchParams, TokenPayload } from '@/types';
 import jwt, { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
 
 export async function getAllStudents({ token, page = 1, pageSize = 10 }: FetchParams) {
   try {
     // Verifikasi token
-    const decoded = jwt.verify(token, dotEnvs.jwtSecret as string) as {
-      id: string;
-      email: string;
-      role: 'TEACHER' | 'STUDENT';
-    };
+    const decoded = jwt.verify(token, dotEnvs.jwtSecret as string) as TokenPayload;
 
     // Hanya teacher yang boleh mengakses semua user
     if (decoded.role !== 'TEACHER') {
@@ -62,14 +58,33 @@ export async function getAllStudents({ token, page = 1, pageSize = 10 }: FetchPa
   }
 }
 
-export async function getUserById(userId: string) {
+export async function getUserByToken(token: string) {
   try {
+    const decoded = jwt.verify(token, dotEnvs.jwtSecret as string) as TokenPayload;
+
     const user = await prisma.user.findUnique({
-      where: { id: userId },
+      where: { id: decoded.id },
+      select: {
+        id: true,
+        fullName: true,
+        email: true,
+        institution: true,
+        purpose: true,
+        role: true,
+        createdAt: true
+      }
     });
 
     return user;
-  } catch (error) {
-    throw Error('Error when get user by id');
+  } catch (error: any) {
+    if (error instanceof TokenExpiredError) {
+      throw new Error('Token has expired. Please login again.');
+    }
+
+    if (error instanceof JsonWebTokenError) {
+      throw new Error('Invalid token. Authorization failed.');
+    }
+
+    throw new Error(`Failed to get exam: ${error.message}`);
   }
 }
