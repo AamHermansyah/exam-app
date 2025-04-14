@@ -17,7 +17,7 @@ export async function createExam(input: ExamSchemaType, token: string) {
     }
   }
 
-  const { title, tags, category, duration, minScore } = input;
+  const { title, tags, category, duration, minScore, description } = input;
 
   try {
     // Verifikasi token dan ambil data user
@@ -39,6 +39,7 @@ export async function createExam(input: ExamSchemaType, token: string) {
         category,
         duration,
         minScore,
+        description,
         authorId: decoded.id,
       },
     });
@@ -62,7 +63,7 @@ export async function editExam(input: ExamSchemaType, examId: string, token: str
     }
   }
 
-  const { title, tags, category, duration, minScore } = input;
+  const { title, tags, category, duration, minScore, description } = input;
 
   try {
     // Verifikasi token dan ambil data user
@@ -97,7 +98,8 @@ export async function editExam(input: ExamSchemaType, examId: string, token: str
         tags,
         category,
         duration,
-        minScore
+        minScore,
+        description
       },
     });
 
@@ -147,6 +149,34 @@ export async function publishExam(examId: string, token: string) {
       data: updatedExam,
     };
   } catch (error: any) {
+    return handleCatchError(error, 'return');
+  }
+}
+
+export async function softDeleteExam(examId: string, token: string) {
+  try {
+    const decoded = jwt.verify(token, dotEnvs.jwtSecret) as TokenPayload;
+
+    if (decoded.role !== 'TEACHER') {
+      return {
+        status: 'error',
+        message: 'Unauthorized'
+      }
+    }
+
+    const deletedExam = await prisma.exam.update({
+      where: { id: examId },
+      data: {
+        isDeleted: true,
+        deletedAt: new Date(),
+      },
+    });
+
+    return {
+      status: 'success',
+      data: deletedExam
+    }
+  } catch (error) {
     return handleCatchError(error, 'return');
   }
 }

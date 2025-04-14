@@ -63,7 +63,7 @@ async function Participants({ id, page, token }: IProps) {
                 </TableCell>
                 <TableCell className="pr-4 py-4 space-x-2">
                   {typeof item.passed === 'boolean' ? (
-                    <Link href={`/ujian/${item.examId}/preview?submissionId=${item.id}`} target="_blank">
+                    <Link href={`/ujian/${item.examId}/preview?submissionId=${item.id}&role=teacher`}>
                       <Button variant="outline" size="icon">
                         <Eye className="w-4 h-4" />
                       </Button>

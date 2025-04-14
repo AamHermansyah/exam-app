@@ -30,7 +30,7 @@ import {
   SelectValue
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { fileToBase64 } from "@/lib/utils";
+import { cleanText, fileToBase64 } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import { questionsSchema, QuestionsSchemaType } from "@/schemas/exam";
 import { createOrEditQuestionWithAnswers } from "@/actions/question";
@@ -252,7 +252,14 @@ function AddQuestionDialog({ onOpenChange, open, examId, token, type, editData }
                         render={({ field }) => (
                           <FormItem className="flex-1">
                             <FormControl>
-                              <Input placeholder="Teks jawaban" {...field} />
+                              <Input
+                                {...field}
+                                placeholder="Teks jawaban"
+                                onChange={(e) => {
+                                  const value = cleanText(e.target.value);
+                                  field.onChange(value);
+                                }}
+                              />
                             </FormControl>
                           </FormItem>
                         )}

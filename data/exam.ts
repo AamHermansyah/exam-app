@@ -34,13 +34,27 @@ export async function getExamDetailById(examId: string, token: string) {
       },
     });
 
+    const avgScoreStudents = await prisma.examSubmission.aggregate({
+      where: {
+        examId,
+        passed: { not: null },
+        score: { not: null }
+      },
+      _avg: {
+        score: true
+      }
+    });
+
     if (!exam) {
       throw new Error('Data not found');
     }
 
     return {
       status: 'success',
-      data: exam,
+      data: {
+        ...exam,
+        avgScoreStudents: avgScoreStudents._avg.score
+      },
     };
   } catch (error: any) {
     throw new Error(handleCatchError(error, 'throw'));
@@ -67,6 +81,7 @@ export async function getExamById({
       where: {
         id: examId,
         publishedAt: onlyPublish ? { not: null } : undefined,
+        isDeleted: false,
       },
       include: {
         questions: includeQuestions ? {
@@ -106,7 +121,10 @@ export async function getAllPublishExams({ token, page = 1, pageSize = 10 }: Fet
     const skip = (page - 1) * pageSize;
 
     const publishExams = await prisma.exam.findMany({
-      where: { publishedAt: { not: null } },
+      where: {
+        publishedAt: { not: null },
+        isDeleted: false
+      },
       skip,
       take: pageSize,
       orderBy: {
@@ -123,7 +141,10 @@ export async function getAllPublishExams({ token, page = 1, pageSize = 10 }: Fet
     });
 
     const totalPublishExams = await prisma.exam.count({
-      where: { publishedAt: { not: null } },
+      where: {
+        publishedAt: { not: null },
+        isDeleted: false
+      },
     });
 
     const examsWithSubmissionStatus = publishExams.map((exam) => {
@@ -162,6 +183,7 @@ export async function getAllExams({ token, page = 1, pageSize = 10 }: FetchParam
 
     // Ambil data user dari database
     const exams = await prisma.exam.findMany({
+      where: { isDeleted: false },
       skip,
       take: pageSize,
       orderBy: {
@@ -179,7 +201,9 @@ export async function getAllExams({ token, page = 1, pageSize = 10 }: FetchParam
     });
 
     // Hitung total user
-    const totalExams = await prisma.exam.count();
+    const totalExams = await prisma.exam.count({
+      where: { isDeleted: false }
+    });
 
     return {
       data: exams,

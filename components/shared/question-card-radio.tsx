@@ -43,8 +43,15 @@ const QuestionCardRadio: React.FC<QuestionCardRadioProps> = ({
               {imageLabel && <p className="text-center text-xs text-muted-foreground">{imageLabel}</p>}
             </div>
           )}
-          <p className="font-medium">
-            {question || 'Question is empty'}
+          <p className="text-justify">
+            {(question || 'Question is empty')
+              .split('\n')
+              .map((line, index) => (
+                <React.Fragment key={index}>
+                  {line}
+                  <br />
+                </React.Fragment>
+              ))}
           </p>
         </div>
       )}
@@ -78,8 +85,8 @@ const QuestionCardRadio: React.FC<QuestionCardRadioProps> = ({
               <Label
                 htmlFor={`q-${ans.id}`}
                 className={cn(
-                  'block flex-1 text-sm cursor-pointer',
-                  selectedAnswer === ans.id && !correctAnswer && 'font-semibold'
+                  'block flex-1 text-sm cursor-pointer font-normal',
+                  selectedAnswer === ans.id && 'font-semibold'
                 )}
               >
                 {ans.answerText}

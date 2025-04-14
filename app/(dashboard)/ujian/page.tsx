@@ -4,7 +4,7 @@ import { SearchParams } from "next/dist/server/request/search-params";
 import { cookies } from "next/headers";
 import { redirect, RedirectType } from "next/navigation";
 import React from "react";
-import UJianLayout from "./_layouts/ujian-layout";
+import UjianLayout from "./_layouts/ujian-layout";
 
 export const metadata: Metadata = {
   title: "ADLS - Informasi Ujian",
@@ -27,7 +27,7 @@ async function ExamInfoPage({ searchParams }: { searchParams: Promise<SearchPara
   if (!exam) return redirect('/404', 'replace' as RedirectType);
 
   return (
-    <UJianLayout data={exam} token={token?.value!} />
+    <UjianLayout data={exam} token={token?.value!} />
   );
 }
 

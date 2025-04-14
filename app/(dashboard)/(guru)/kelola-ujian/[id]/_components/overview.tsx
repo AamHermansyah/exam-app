@@ -55,6 +55,10 @@ async function Overview({ id, token }: IProps) {
           <p className="text-sm text-primary">Skor Minimal</p>
           <p className="font-medium">{exam.minScore}/100</p>
         </div>
+        <div className="space-y-1">
+          <p className="text-sm text-primary">Rata Rata Skor</p>
+          <p className="font-medium">{exam.avgScoreStudents}</p>
+        </div>
       </div>
     </div>
   )

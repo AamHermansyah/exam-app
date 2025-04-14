@@ -17,6 +17,7 @@ import { cookies } from 'next/headers';
 import { getAllExams } from '@/data/exam';
 import { Pagination } from '@/components/ui/pagination';
 import { formatDate } from '@/lib/utils';
+import DeleteAlert from './_components/delete-alert';
 
 async function KelolaUjianPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
   const page = (await searchParams).page;
@@ -73,7 +74,7 @@ async function KelolaUjianPage({ searchParams }: { searchParams: Promise<SearchP
               <TableCell className="py-4">{exam.duration} Menit</TableCell>
               <TableCell className="py-4">{exam._count.ExamSubmission} Submit</TableCell>
               <TableCell className="py-4">{formatDate(exam.createdAt, { withTime: true })}</TableCell>
-              <TableCell className="pr-4 py-4 text-center space-x-2">
+              <TableCell className="pr-4 py-4 flex flex-wrap justify-center gap-2">
                 <Link href={`/kelola-ujian/edit?id=${exam.id}`} target="_blank">
                   <Button variant="outline" size="icon">
                     <Pencil className="w-4 h-4" />
@@ -84,6 +85,11 @@ async function KelolaUjianPage({ searchParams }: { searchParams: Promise<SearchP
                     <Eye className="w-4 h-4" />
                   </Button>
                 </Link>
+                <DeleteAlert
+                  token={token?.value!}
+                  examId={exam.id}
+                  examTitle={exam.title}
+                />
               </TableCell>
             </TableRow>
           ))}

@@ -2682,9 +2682,12 @@ export namespace Prisma {
     category: string | null
     duration: number | null
     minScore: number | null
+    description: string | null
     createdAt: Date | null
     updatedAt: Date | null
     publishedAt: Date | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
     authorId: string | null
   }
 
@@ -2695,9 +2698,12 @@ export namespace Prisma {
     category: string | null
     duration: number | null
     minScore: number | null
+    description: string | null
     createdAt: Date | null
     updatedAt: Date | null
     publishedAt: Date | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
     authorId: string | null
   }
 
@@ -2708,9 +2714,12 @@ export namespace Prisma {
     category: number
     duration: number
     minScore: number
+    description: number
     createdAt: number
     updatedAt: number
     publishedAt: number
+    isDeleted: number
+    deletedAt: number
     authorId: number
     _all: number
   }
@@ -2733,9 +2742,12 @@ export namespace Prisma {
     category?: true
     duration?: true
     minScore?: true
+    description?: true
     createdAt?: true
     updatedAt?: true
     publishedAt?: true
+    isDeleted?: true
+    deletedAt?: true
     authorId?: true
   }
 
@@ -2746,9 +2758,12 @@ export namespace Prisma {
     category?: true
     duration?: true
     minScore?: true
+    description?: true
     createdAt?: true
     updatedAt?: true
     publishedAt?: true
+    isDeleted?: true
+    deletedAt?: true
     authorId?: true
   }
 
@@ -2759,9 +2774,12 @@ export namespace Prisma {
     category?: true
     duration?: true
     minScore?: true
+    description?: true
     createdAt?: true
     updatedAt?: true
     publishedAt?: true
+    isDeleted?: true
+    deletedAt?: true
     authorId?: true
     _all?: true
   }
@@ -2859,9 +2877,12 @@ export namespace Prisma {
     category: string
     duration: number
     minScore: number | null
+    description: string | null
     createdAt: Date
     updatedAt: Date
     publishedAt: Date | null
+    isDeleted: boolean
+    deletedAt: Date | null
     authorId: string
     _count: ExamCountAggregateOutputType | null
     _avg: ExamAvgAggregateOutputType | null
@@ -2891,9 +2912,12 @@ export namespace Prisma {
     category?: boolean
     duration?: boolean
     minScore?: boolean
+    description?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     publishedAt?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
     authorId?: boolean
     author?: boolean | UserDefaultArgs<ExtArgs>
     questions?: boolean | Exam$questionsArgs<ExtArgs>
@@ -2908,9 +2932,12 @@ export namespace Prisma {
     category?: boolean
     duration?: boolean
     minScore?: boolean
+    description?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     publishedAt?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
     authorId?: boolean
     author?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["exam"]>
@@ -2922,9 +2949,12 @@ export namespace Prisma {
     category?: boolean
     duration?: boolean
     minScore?: boolean
+    description?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     publishedAt?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
     authorId?: boolean
     author?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["exam"]>
@@ -2936,13 +2966,16 @@ export namespace Prisma {
     category?: boolean
     duration?: boolean
     minScore?: boolean
+    description?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     publishedAt?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
     authorId?: boolean
   }
 
-  export type ExamOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "tags" | "category" | "duration" | "minScore" | "createdAt" | "updatedAt" | "publishedAt" | "authorId", ExtArgs["result"]["exam"]>
+  export type ExamOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "tags" | "category" | "duration" | "minScore" | "description" | "createdAt" | "updatedAt" | "publishedAt" | "isDeleted" | "deletedAt" | "authorId", ExtArgs["result"]["exam"]>
   export type ExamInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     author?: boolean | UserDefaultArgs<ExtArgs>
     questions?: boolean | Exam$questionsArgs<ExtArgs>
@@ -2970,9 +3003,12 @@ export namespace Prisma {
       category: string
       duration: number
       minScore: number | null
+      description: string | null
       createdAt: Date
       updatedAt: Date
       publishedAt: Date | null
+      isDeleted: boolean
+      deletedAt: Date | null
       authorId: string
     }, ExtArgs["result"]["exam"]>
     composites: {}
@@ -3406,9 +3442,12 @@ export namespace Prisma {
     readonly category: FieldRef<"Exam", 'String'>
     readonly duration: FieldRef<"Exam", 'Int'>
     readonly minScore: FieldRef<"Exam", 'Int'>
+    readonly description: FieldRef<"Exam", 'String'>
     readonly createdAt: FieldRef<"Exam", 'DateTime'>
     readonly updatedAt: FieldRef<"Exam", 'DateTime'>
     readonly publishedAt: FieldRef<"Exam", 'DateTime'>
+    readonly isDeleted: FieldRef<"Exam", 'Boolean'>
+    readonly deletedAt: FieldRef<"Exam", 'DateTime'>
     readonly authorId: FieldRef<"Exam", 'String'>
   }
     
@@ -8398,9 +8437,12 @@ export namespace Prisma {
     category: 'category',
     duration: 'duration',
     minScore: 'minScore',
+    description: 'description',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     publishedAt: 'publishedAt',
+    isDeleted: 'isDeleted',
+    deletedAt: 'deletedAt',
     authorId: 'authorId'
   };
 
@@ -8543,6 +8585,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'QuestionType'
    */
   export type EnumQuestionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QuestionType'>
@@ -8553,13 +8602,6 @@ export namespace Prisma {
    * Reference to a field of type 'QuestionType[]'
    */
   export type ListEnumQuestionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QuestionType[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Boolean'
-   */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -8668,9 +8710,12 @@ export namespace Prisma {
     category?: StringFilter<"Exam"> | string
     duration?: IntFilter<"Exam"> | number
     minScore?: IntNullableFilter<"Exam"> | number | null
+    description?: StringNullableFilter<"Exam"> | string | null
     createdAt?: DateTimeFilter<"Exam"> | Date | string
     updatedAt?: DateTimeFilter<"Exam"> | Date | string
     publishedAt?: DateTimeNullableFilter<"Exam"> | Date | string | null
+    isDeleted?: BoolFilter<"Exam"> | boolean
+    deletedAt?: DateTimeNullableFilter<"Exam"> | Date | string | null
     authorId?: StringFilter<"Exam"> | string
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
     questions?: QuestionListRelationFilter
@@ -8684,9 +8729,12 @@ export namespace Prisma {
     category?: SortOrder
     duration?: SortOrder
     minScore?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     publishedAt?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
     authorId?: SortOrder
     author?: UserOrderByWithRelationInput
     questions?: QuestionOrderByRelationAggregateInput
@@ -8703,9 +8751,12 @@ export namespace Prisma {
     category?: StringFilter<"Exam"> | string
     duration?: IntFilter<"Exam"> | number
     minScore?: IntNullableFilter<"Exam"> | number | null
+    description?: StringNullableFilter<"Exam"> | string | null
     createdAt?: DateTimeFilter<"Exam"> | Date | string
     updatedAt?: DateTimeFilter<"Exam"> | Date | string
     publishedAt?: DateTimeNullableFilter<"Exam"> | Date | string | null
+    isDeleted?: BoolFilter<"Exam"> | boolean
+    deletedAt?: DateTimeNullableFilter<"Exam"> | Date | string | null
     authorId?: StringFilter<"Exam"> | string
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
     questions?: QuestionListRelationFilter
@@ -8719,9 +8770,12 @@ export namespace Prisma {
     category?: SortOrder
     duration?: SortOrder
     minScore?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     publishedAt?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
     authorId?: SortOrder
     _count?: ExamCountOrderByAggregateInput
     _avg?: ExamAvgOrderByAggregateInput
@@ -8740,9 +8794,12 @@ export namespace Prisma {
     category?: StringWithAggregatesFilter<"Exam"> | string
     duration?: IntWithAggregatesFilter<"Exam"> | number
     minScore?: IntNullableWithAggregatesFilter<"Exam"> | number | null
+    description?: StringNullableWithAggregatesFilter<"Exam"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Exam"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Exam"> | Date | string
     publishedAt?: DateTimeNullableWithAggregatesFilter<"Exam"> | Date | string | null
+    isDeleted?: BoolWithAggregatesFilter<"Exam"> | boolean
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"Exam"> | Date | string | null
     authorId?: StringWithAggregatesFilter<"Exam"> | string
   }
 
@@ -9114,9 +9171,12 @@ export namespace Prisma {
     category: string
     duration: number
     minScore?: number | null
+    description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     publishedAt?: Date | string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
     author: UserCreateNestedOneWithoutExamInput
     questions?: QuestionCreateNestedManyWithoutExamInput
     ExamSubmission?: ExamSubmissionCreateNestedManyWithoutExamInput
@@ -9129,9 +9189,12 @@ export namespace Prisma {
     category: string
     duration: number
     minScore?: number | null
+    description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     publishedAt?: Date | string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
     authorId: string
     questions?: QuestionUncheckedCreateNestedManyWithoutExamInput
     ExamSubmission?: ExamSubmissionUncheckedCreateNestedManyWithoutExamInput
@@ -9144,9 +9207,12 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
     minScore?: NullableIntFieldUpdateOperationsInput | number | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     author?: UserUpdateOneRequiredWithoutExamNestedInput
     questions?: QuestionUpdateManyWithoutExamNestedInput
     ExamSubmission?: ExamSubmissionUpdateManyWithoutExamNestedInput
@@ -9159,9 +9225,12 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
     minScore?: NullableIntFieldUpdateOperationsInput | number | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     authorId?: StringFieldUpdateOperationsInput | string
     questions?: QuestionUncheckedUpdateManyWithoutExamNestedInput
     ExamSubmission?: ExamSubmissionUncheckedUpdateManyWithoutExamNestedInput
@@ -9174,9 +9243,12 @@ export namespace Prisma {
     category: string
     duration: number
     minScore?: number | null
+    description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     publishedAt?: Date | string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
     authorId: string
   }
 
@@ -9187,9 +9259,12 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
     minScore?: NullableIntFieldUpdateOperationsInput | number | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ExamUncheckedUpdateManyInput = {
@@ -9199,9 +9274,12 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
     minScore?: NullableIntFieldUpdateOperationsInput | number | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     authorId?: StringFieldUpdateOperationsInput | string
   }
 
@@ -9630,6 +9708,21 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
   export type DateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -9639,6 +9732,11 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type UserScalarRelationFilter = {
@@ -9668,9 +9766,12 @@ export namespace Prisma {
     category?: SortOrder
     duration?: SortOrder
     minScore?: SortOrder
+    description?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     publishedAt?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
     authorId?: SortOrder
   }
 
@@ -9686,9 +9787,12 @@ export namespace Prisma {
     category?: SortOrder
     duration?: SortOrder
     minScore?: SortOrder
+    description?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     publishedAt?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
     authorId?: SortOrder
   }
 
@@ -9699,9 +9803,12 @@ export namespace Prisma {
     category?: SortOrder
     duration?: SortOrder
     minScore?: SortOrder
+    description?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     publishedAt?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
     authorId?: SortOrder
   }
 
@@ -9742,6 +9849,24 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -9756,19 +9881,12 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
-  export type StringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type EnumQuestionTypeFilter<$PrismaModel = never> = {
@@ -9844,24 +9962,6 @@ export namespace Prisma {
     correctAnswerIndex?: SortOrder
   }
 
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
   export type EnumQuestionTypeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.QuestionType | EnumQuestionTypeFieldRefInput<$PrismaModel>
     in?: $Enums.QuestionType[] | ListEnumQuestionTypeFieldRefInput<$PrismaModel>
@@ -9870,11 +9970,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumQuestionTypeFilter<$PrismaModel>
     _max?: NestedEnumQuestionTypeFilter<$PrismaModel>
-  }
-
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type QuestionScalarRelationFilter = {
@@ -9901,14 +9996,6 @@ export namespace Prisma {
     answerText?: SortOrder
     isCorrect?: SortOrder
     questionId?: SortOrder
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type BoolNullableFilter<$PrismaModel = never> = {
@@ -10147,8 +10234,16 @@ export namespace Prisma {
     divide?: number
   }
 
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type UserUpdateOneRequiredWithoutExamNestedInput = {
@@ -10249,10 +10344,6 @@ export namespace Prisma {
     connect?: SubmissionAnswerWhereUniqueInput | SubmissionAnswerWhereUniqueInput[]
   }
 
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
-  }
-
   export type EnumQuestionTypeFieldUpdateOperationsInput = {
     set?: $Enums.QuestionType
   }
@@ -10325,10 +10416,6 @@ export namespace Prisma {
     create?: XOR<QuestionCreateWithoutAnswersInput, QuestionUncheckedCreateWithoutAnswersInput>
     connectOrCreate?: QuestionCreateOrConnectWithoutAnswersInput
     connect?: QuestionWhereUniqueInput
-  }
-
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
   }
 
   export type QuestionUpdateOneRequiredWithoutAnswersNestedInput = {
@@ -10536,6 +10623,20 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -10545,6 +10646,11 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -10601,41 +10707,6 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
-  export type NestedStringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type NestedEnumQuestionTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.QuestionType | EnumQuestionTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.QuestionType[] | ListEnumQuestionTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.QuestionType[] | ListEnumQuestionTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumQuestionTypeFilter<$PrismaModel> | $Enums.QuestionType
-  }
-
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -10653,19 +10724,18 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type NestedEnumQuestionTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.QuestionType | EnumQuestionTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.QuestionType[] | ListEnumQuestionTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.QuestionType[] | ListEnumQuestionTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumQuestionTypeWithAggregatesFilter<$PrismaModel> | $Enums.QuestionType
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumQuestionTypeFilter<$PrismaModel>
-    _max?: NestedEnumQuestionTypeFilter<$PrismaModel>
-  }
-
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -10674,6 +10744,23 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedEnumQuestionTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.QuestionType | EnumQuestionTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.QuestionType[] | ListEnumQuestionTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.QuestionType[] | ListEnumQuestionTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumQuestionTypeFilter<$PrismaModel> | $Enums.QuestionType
+  }
+
+  export type NestedEnumQuestionTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.QuestionType | EnumQuestionTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.QuestionType[] | ListEnumQuestionTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.QuestionType[] | ListEnumQuestionTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumQuestionTypeWithAggregatesFilter<$PrismaModel> | $Enums.QuestionType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumQuestionTypeFilter<$PrismaModel>
+    _max?: NestedEnumQuestionTypeFilter<$PrismaModel>
   }
 
   export type NestedBoolNullableFilter<$PrismaModel = never> = {
@@ -10696,9 +10783,12 @@ export namespace Prisma {
     category: string
     duration: number
     minScore?: number | null
+    description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     publishedAt?: Date | string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
     questions?: QuestionCreateNestedManyWithoutExamInput
     ExamSubmission?: ExamSubmissionCreateNestedManyWithoutExamInput
   }
@@ -10710,9 +10800,12 @@ export namespace Prisma {
     category: string
     duration: number
     minScore?: number | null
+    description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     publishedAt?: Date | string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
     questions?: QuestionUncheckedCreateNestedManyWithoutExamInput
     ExamSubmission?: ExamSubmissionUncheckedCreateNestedManyWithoutExamInput
   }
@@ -10789,9 +10882,12 @@ export namespace Prisma {
     category?: StringFilter<"Exam"> | string
     duration?: IntFilter<"Exam"> | number
     minScore?: IntNullableFilter<"Exam"> | number | null
+    description?: StringNullableFilter<"Exam"> | string | null
     createdAt?: DateTimeFilter<"Exam"> | Date | string
     updatedAt?: DateTimeFilter<"Exam"> | Date | string
     publishedAt?: DateTimeNullableFilter<"Exam"> | Date | string | null
+    isDeleted?: BoolFilter<"Exam"> | boolean
+    deletedAt?: DateTimeNullableFilter<"Exam"> | Date | string | null
     authorId?: StringFilter<"Exam"> | string
   }
 
@@ -11018,9 +11114,12 @@ export namespace Prisma {
     category: string
     duration: number
     minScore?: number | null
+    description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     publishedAt?: Date | string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
     author: UserCreateNestedOneWithoutExamInput
     ExamSubmission?: ExamSubmissionCreateNestedManyWithoutExamInput
   }
@@ -11032,9 +11131,12 @@ export namespace Prisma {
     category: string
     duration: number
     minScore?: number | null
+    description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     publishedAt?: Date | string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
     authorId: string
     ExamSubmission?: ExamSubmissionUncheckedCreateNestedManyWithoutExamInput
   }
@@ -11106,9 +11208,12 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
     minScore?: NullableIntFieldUpdateOperationsInput | number | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     author?: UserUpdateOneRequiredWithoutExamNestedInput
     ExamSubmission?: ExamSubmissionUpdateManyWithoutExamNestedInput
   }
@@ -11120,9 +11225,12 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
     minScore?: NullableIntFieldUpdateOperationsInput | number | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     authorId?: StringFieldUpdateOperationsInput | string
     ExamSubmission?: ExamSubmissionUncheckedUpdateManyWithoutExamNestedInput
   }
@@ -11250,9 +11358,12 @@ export namespace Prisma {
     category: string
     duration: number
     minScore?: number | null
+    description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     publishedAt?: Date | string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
     author: UserCreateNestedOneWithoutExamInput
     questions?: QuestionCreateNestedManyWithoutExamInput
   }
@@ -11264,9 +11375,12 @@ export namespace Prisma {
     category: string
     duration: number
     minScore?: number | null
+    description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     publishedAt?: Date | string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
     authorId: string
     questions?: QuestionUncheckedCreateNestedManyWithoutExamInput
   }
@@ -11347,9 +11461,12 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
     minScore?: NullableIntFieldUpdateOperationsInput | number | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     author?: UserUpdateOneRequiredWithoutExamNestedInput
     questions?: QuestionUpdateManyWithoutExamNestedInput
   }
@@ -11361,9 +11478,12 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
     minScore?: NullableIntFieldUpdateOperationsInput | number | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     authorId?: StringFieldUpdateOperationsInput | string
     questions?: QuestionUncheckedUpdateManyWithoutExamNestedInput
   }
@@ -11560,9 +11680,12 @@ export namespace Prisma {
     category: string
     duration: number
     minScore?: number | null
+    description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     publishedAt?: Date | string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
   }
 
   export type ExamSubmissionCreateManyUserInput = {
@@ -11584,9 +11707,12 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
     minScore?: NullableIntFieldUpdateOperationsInput | number | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     questions?: QuestionUpdateManyWithoutExamNestedInput
     ExamSubmission?: ExamSubmissionUpdateManyWithoutExamNestedInput
   }
@@ -11598,9 +11724,12 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
     minScore?: NullableIntFieldUpdateOperationsInput | number | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     questions?: QuestionUncheckedUpdateManyWithoutExamNestedInput
     ExamSubmission?: ExamSubmissionUncheckedUpdateManyWithoutExamNestedInput
   }
@@ -11612,9 +11741,12 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
     minScore?: NullableIntFieldUpdateOperationsInput | number | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ExamSubmissionUpdateWithoutUserInput = {

@@ -12,39 +12,6 @@ import { Badge } from "@/components/ui/badge";
 import { getAllExams } from '@/data/exam';
 import { formatDate } from '@/lib/utils';
 
-const exams = [
-  {
-    id: 1,
-    name: "Mathematics Exam",
-    category: "Mathematics",
-    tags: ["Midterm", "Mandatory"],
-    questionCount: 40,
-    duration: "90 minutes",
-    totalParticipants: 120,
-    date: "March 20, 2025"
-  },
-  {
-    id: 2,
-    name: "Physics Exam",
-    category: "Science",
-    tags: ["Tryout"],
-    questionCount: 35,
-    duration: "75 minutes",
-    totalParticipants: 98,
-    date: "March 22, 2025"
-  },
-  {
-    id: 3,
-    name: "Chemistry Exam",
-    category: "Science",
-    tags: ["Final"],
-    questionCount: 50,
-    duration: "120 minutes",
-    totalParticipants: 85,
-    date: "March 25, 2025"
-  },
-];
-
 interface IProps {
   token: string;
 }

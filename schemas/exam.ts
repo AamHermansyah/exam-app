@@ -14,6 +14,7 @@ export const examSchema = z.object({
     .coerce.number()
     .min(10, "Skor minimal tidak boleh kurang dari 10")
     .max(100, "Skor minimal tidak boleh lebih dari 100"),
+  description: z.string().min(20, "Deskripsi minimal 20 karakter"),
 });
 
 export type ExamSchemaType = z.infer<typeof examSchema>;

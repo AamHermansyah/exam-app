@@ -12,6 +12,7 @@ import { Answer, Exam, Question } from "@/lib/generated/prisma";
 import EditInfoDialog from "../_components/edit-info-dialog";
 import { toast } from "sonner";
 import { publishExam } from "@/actions/exam";
+import { HTMLRenderer } from "@/components/core/html-renderer";
 
 interface IProps {
   token: string;
@@ -77,6 +78,13 @@ export default function EditUjianLayout({ token, data }: IProps) {
               ))}
             </div>
           </div>
+          <div className="space-y-1">
+            <h2 className="text-sm text-primary">Deskripsi</h2>
+            <HTMLRenderer
+              htmlString={exam.description || 'Tidak ada deskripsi'}
+              className="tip-tap border rounded-md p-3"
+            />
+          </div>
           {!exam.publishedAt && (
             <div className="pt-2 space-y-2">
               <Button
@@ -88,7 +96,7 @@ export default function EditUjianLayout({ token, data }: IProps) {
               </Button>
               <Button
                 className="w-full"
-                disabled={!!deleteToastId}
+                disabled={!!deleteToastId || questions.length === 0}
                 onClick={() => {
                   const deleteId = toast.custom((id) => {
                     return (
@@ -220,7 +228,8 @@ export default function EditUjianLayout({ token, data }: IProps) {
           category: exam.category,
           duration: exam.duration,
           tags: exam.tags,
-          minScore: exam.minScore || 0
+          minScore: exam.minScore || 0,
+          description: exam.description
         }}
       />
       <Button

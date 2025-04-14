@@ -12,11 +12,14 @@ export async function getOverview(token: string) {
     }
 
     const durationAvgExams = await prisma.exam.aggregate({
+      where: { isDeleted: false },
       _avg: {
         duration: true,
       },
     });
-    const totalExams = await prisma.exam.count();
+    const totalExams = await prisma.exam.count({
+      where: { isDeleted: false },
+    });
     const totalExamSubmissions = await prisma.examSubmission.count();
     const totalUsers = await prisma.user.count();
 

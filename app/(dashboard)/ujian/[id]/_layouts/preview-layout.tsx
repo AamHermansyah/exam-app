@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge'
 
 interface IProps {
   data: unknown;
+  roleSearchParams?: string;
 }
 
 type ExamSubmissionType = ExamSubmission & {
@@ -24,11 +25,9 @@ type ExamSubmissionType = ExamSubmission & {
   user: Pick<User, 'id' | 'fullName'>;
 }
 
-function PreviewLayout({ data }: IProps) {
+function PreviewLayout({ data, roleSearchParams }: IProps) {
   const examSubmission = data as ExamSubmissionType;
   const questions = examSubmission.exam.questions;
-
-  console.log(examSubmission)
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const currentQuestion = questions[currentQuestionIndex]
@@ -38,15 +37,17 @@ function PreviewLayout({ data }: IProps) {
 
   return (
     <div className="w-full h-full flex flex-col justify-center items-center">
-      <div className="w-full max-w-4xl mx-auto space-y-4">
-        <div>
-          <Link href="/riwayat">
-            <Button variant="outline">
-              <ArrowLeft className="w-4 h-4" />
-              Kembali
-            </Button>
-          </Link>
-        </div>
+      <div className="w-full max-w-2xl mx-auto space-y-4">
+        {roleSearchParams !== 'teacher' && (
+          <div>
+            <Link href="/riwayat">
+              <Button variant="outline">
+                <ArrowLeft className="w-4 h-4" />
+                Kembali
+              </Button>
+            </Link>
+          </div>
+        )}
         <div className="space-y-1">
           <h2 className="text-lg sm:text-xl font-medium">{examSubmission.exam.title}</h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-2 gap-y-4 p-4 border rounded-lg shadow-sm bg-gray-50">

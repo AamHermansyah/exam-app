@@ -33,15 +33,16 @@ import { FormError } from "@/components/shared/form-error";
 import { editExam } from "@/actions/exam";
 import { categories } from "@/constants";
 import { Exam } from "@/lib/generated/prisma";
+import { RichTextEditor } from "@/components/core/richtext-editor";
 
 interface IProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   token: string;
-  data: Pick<Exam, 'id' | 'title' | 'duration' | 'category' | 'tags' | 'minScore'>;
+  data: Pick<Exam, 'id' | 'title' | 'duration' | 'category' | 'tags' | 'minScore' | 'description'>;
 }
 
-const validKeys = ["title", "category", "duration", "tags", "minScore"] as const;
+const validKeys = ["title", "category", "duration", "tags", "minScore", "description"] as const;
 
 function EditInfoDialog({ onOpenChange, open, data, token }: IProps) {
   const [error, setError] = useState("");
@@ -173,6 +174,26 @@ function EditInfoDialog({ onOpenChange, open, data, token }: IProps) {
                   <FormLabel>Tags</FormLabel>
                   <FormControl>
                     <Input placeholder="Contoh: Matematika, Aljabar" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={control}
+              name="description"
+              render={({ field }) => (
+                <FormItem className="col-span-2">
+                  <FormLabel>Deskripsi</FormLabel>
+                  <FormControl>
+                    <RichTextEditor
+                      className="max-h-[150px] overflow-y-auto"
+                      value={field.value}
+                      onChangeValue={(value) => {
+                        console.log(value);
+                        field.onChange(value);
+                      }}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -85,4 +85,28 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  .tip-tap h1 {
+    @apply text-xl font-semibold mb-3;
+  }
+
+  .tip-tap h2 {
+    @apply text-base font-medium mb-2;
+  }
+
+  .tip-tap ul {
+    @apply list-disc pl-6 mb-2 text-sm;
+  }
+
+  .tip-tap ol {
+    @apply list-decimal pl-6 mb-2 text-sm;
+  }
+
+  .tip-tap li {
+    @apply mb-1;
+  }
+
+  .tip-tap p {
+    @apply leading-relaxed text-sm;
+  }
 }

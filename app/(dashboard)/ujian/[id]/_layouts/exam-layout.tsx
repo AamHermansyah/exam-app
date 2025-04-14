@@ -127,9 +127,9 @@ function ExamLayout({ data, token }: IProps) {
 
   return (
     <div className="w-full h-full flex flex-col justify-center items-center">
-      <div className="w-full max-w-4xl mx-auto space-y-4">
+      <div className="w-full max-w-2xl mx-auto space-y-4">
         <div className="space-y-1">
-          <h2 className="text-lg sm:text-xl font-medium">Matematika Dasar</h2>
+          <h2 className="text-lg sm:text-xl font-medium">{exam.title}</h2>
           <div className="p-4 text-center border rounded-lg shadow-sm bg-gray-50">
             <h4 className="text-sm">Sisa Waktu</h4>
             <span className="text-2xl font-medium text-destructive">

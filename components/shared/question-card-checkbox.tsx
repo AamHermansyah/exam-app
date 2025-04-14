@@ -44,8 +44,15 @@ const QuestionCardCheckbox: React.FC<QuestionCardCheckboxProps> = ({
               {imageLabel && <p className="text-center text-xs text-muted-foreground">{imageLabel}</p>}
             </div>
           )}
-          <p className="font-medium">
-            {question || 'Question is empty'}
+          <p className="text-justify">
+            {(question || 'Question is empty')
+              .split('\n')
+              .map((line, index) => (
+                <React.Fragment key={index}>
+                  {line}
+                  <br />
+                </React.Fragment>
+              ))}
           </p>
         </div>
       )}
@@ -81,7 +88,7 @@ const QuestionCardCheckbox: React.FC<QuestionCardCheckboxProps> = ({
               />
               <span className={cn(
                 'text-sm',
-                isSelected && !correctAnswers.length && 'font-semibold'
+                isSelected && 'font-semibold'
               )}>
                 {ans.answerText}
               </span>

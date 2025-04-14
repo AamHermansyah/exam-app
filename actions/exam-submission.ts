@@ -106,10 +106,17 @@ export async function submitExam({ token, examId, answers }: SubmitExamInput) {
       const studentAnswer = answers.find((a) => a.questionId === question.id);
       if (!studentAnswer) continue;
 
-      const correctAnswerIds = question.answers
-        .filter((a) => a.isCorrect)
-        .map((a) => a.id)
-        .sort();
+      let correctAnswerIds: string[] = [];
+      const { correctAnswerIndex } = question;
+
+      if (question.type === 'CHECKBOX') {
+        correctAnswerIds = question.answers
+          .filter((a) => a.isCorrect)
+          .map((a) => a.id)
+          .sort();
+      } else { // Jika type radio
+        correctAnswerIds = correctAnswerIndex! >= 0 ? [question.answers[correctAnswerIndex!]?.id] : [];
+      }
 
       const selectedIds = [...studentAnswer.selectedAnswerIds].sort();
 

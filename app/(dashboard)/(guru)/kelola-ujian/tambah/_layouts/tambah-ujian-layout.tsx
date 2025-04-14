@@ -15,11 +15,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { examSchema, ExamSchemaType } from "@/schemas/exam";
-import { categories } from "@/constants";
+import { categories, defaultDescription } from "@/constants";
 import { useRouter } from "next/navigation";
 import { createExam } from "@/actions/exam";
 import { LoaderCircle } from "lucide-react";
 import { FormError } from "@/components/shared/form-error";
+import { RichTextEditor } from "@/components/core/richtext-editor";
 
 interface IProps {
   token: string;
@@ -37,7 +38,8 @@ export default function TambahUjianLayout({ token }: IProps) {
       tags: "",
       category: "",
       duration: 60,
-      minScore: 80
+      minScore: 80,
+      description: defaultDescription
     },
   });
 
@@ -141,6 +143,25 @@ export default function TambahUjianLayout({ token }: IProps) {
                 <FormLabel>Tags</FormLabel>
                 <FormControl>
                   <Input placeholder="Contoh: Matematika, Aljabar" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={control}
+            name="description"
+            render={({ field }) => (
+              <FormItem className="col-span-2">
+                <FormLabel>Deskripsi</FormLabel>
+                <FormControl>
+                  <RichTextEditor
+                    value={field.value}
+                    onChangeValue={(value) => {
+                      console.log(value);
+                      field.onChange(value);
+                    }}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

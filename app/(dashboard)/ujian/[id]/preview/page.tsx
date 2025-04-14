@@ -6,7 +6,7 @@ import { cookies } from 'next/headers';
 import { redirect, RedirectType } from 'next/navigation';
 
 async function PreviewPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
-  const submissionId = (await searchParams).submissionId;
+  const { submissionId, role } = await searchParams;
   const token = (await cookies()).get('token');
 
   if (!submissionId) redirect('/404', 'replace' as RedirectType);
@@ -15,7 +15,10 @@ async function PreviewPage({ searchParams }: { searchParams: Promise<SearchParam
   if (!examSubmission.data) redirect('/404', 'replace' as RedirectType);
 
   return (
-    <PreviewLayout data={examSubmission.data} />
+    <PreviewLayout
+      data={examSubmission.data}
+      roleSearchParams={role as string | undefined}
+    />
   )
 }
 

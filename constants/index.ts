@@ -72,3 +72,14 @@ export const rules = [
   "Gunakan waktu sebaik mungkin, waktu akan terus berjalan.",
   "Jika keluar dari halaman, waktu tetap berjalan.",
 ];
+
+export const defaultDescription = `
+  <h2>Peraturan Ujian</h2>
+  <ul>
+    <li>Pastikan koneksi internet stabil selama ujian berlangsung.</li>
+    <li>Tidak diperkenankan membuka tab atau aplikasi lain.</li>
+    <li>Setiap soal wajib dijawab sebelum mengumpulkan.</li>
+    <li>Gunakan waktu sebaik mungkin, waktu akan terus berjalan.</li>
+    <li>Jika keluar dari halaman, waktu tetap berjalan.</li>
+  </ul>
+`;

@@ -10,6 +10,7 @@ import { createExamSubmission } from '@/actions/exam-submission';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { isSubmissionExpired } from '@/lib/utils';
+import { HTMLRenderer } from '@/components/core/html-renderer';
 
 interface IProps {
   data: Exam & {
@@ -66,15 +67,10 @@ function UjianLayout({ data, token }: IProps) {
       </div>
 
       <div className="bg-muted rounded-xl p-6 space-y-4 border">
-        <div className="flex items-center gap-2 text-lg font-semibold">
-          <ShieldCheck className="w-5 h-5 text-primary" />
-          Peraturan Ujian
-        </div>
-        <ul className="list-disc list-inside space-y-2 text-sm text-muted-foreground">
-          {rules.map((rule, index) => (
-            <li key={index}>{rule}</li>
-          ))}
-        </ul>
+        <HTMLRenderer
+          htmlString={data.description || 'Tidak ada deskripsi'}
+          className="tip-tap [&_li]:text-muted-foreground [&_p]:text-muted-foreground"
+        />
       </div>
 
       <div className="flex flex-col gap-4 sm:flex-row sm:justify-between items-center">
