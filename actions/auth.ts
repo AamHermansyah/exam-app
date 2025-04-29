@@ -33,6 +33,13 @@ export async function loginUser(input: LoginSchemaType) {
       }
     }
 
+    if (!user.isActive) {
+      return {
+        status: 'error',
+        message: 'Akun anda telah dinonaktifkan oleh administrator. Silahkan hubungi mereka!'
+      }
+    }
+
     // Bandingkan password
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {

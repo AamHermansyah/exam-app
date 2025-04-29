@@ -47,8 +47,8 @@ export const getBadgeVariantSubmissionStatus = (score: null | number, passed: nu
 }
 
 export const getStatusLabel = (score: null | number, passed: null | boolean, expireAt: Date) => {
-  if (passed) return 'Lulus';
-  else if (!passed && typeof score === 'number') return 'Tidak Lulus';
+  if (passed) return 'Tuntas';
+  else if (!passed && typeof score === 'number') return 'Tidak Tuntas';
   else if (isSubmissionExpired(expireAt)) return 'Telat';
   else return 'Berjalan';
 }

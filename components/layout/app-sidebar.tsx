@@ -49,6 +49,7 @@ export function AppSidebar({ user, ...props }: TProps) {
       <SidebarContent>
         {(Object.keys(navigations) as Array<keyof typeof navigations>).map((key) => {
           if (key === 'guru' && user.role === 'STUDENT') return null;
+          if (key === 'siswa' && user.role === 'TEACHER') return null;
 
           return (
             <SidebarGroup key={`sb-${key}`}>

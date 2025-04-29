@@ -12,13 +12,15 @@ import { Button } from "@/components/ui/button";
 import { LoaderCircle } from "lucide-react";
 import { updateUser } from "@/actions/user";
 import { toast } from "sonner";
+import { Separator } from "@/components/ui/separator";
 
 interface IProps {
   user: Omit<User, 'password' | 'updatedAt'>;
   token: string;
+  isOwnProfile: boolean;
 }
 
-function ProfileDetail({ user, token }: IProps) {
+function ProfileDetail({ user, token, isOwnProfile }: IProps) {
   const [loading, startServer] = useTransition();
   const [error, setError] = useState("");
 
@@ -27,7 +29,8 @@ function ProfileDetail({ user, token }: IProps) {
     defaultValues: {
       fullName: user.fullName,
       email: user.email,
-      purpose: user.purpose,
+      purpose: user.purpose || '',
+      class: user.class || '',
       institution: user.institution,
     },
   });
@@ -35,7 +38,7 @@ function ProfileDetail({ user, token }: IProps) {
   function onSubmit(values: ProfileSchemaType) {
     setError("");
     startServer(() => {
-      updateUser(values, token)
+      updateUser(values, token, user.email)
         .then((data) => {
           if (data.status === 'success') {
             toast.success('Profile berhasil di update!');
@@ -51,9 +54,10 @@ function ProfileDetail({ user, token }: IProps) {
   return (
     <div className="w-full px-4 py-6 border rounded-md">
       <div className="space-y-4">
-        <h3 className="font-semibold leading-none">
-          Informasi Pribadi
+        <h3 className="text-lg font-semibold leading-none">
+          Informasi {isOwnProfile ? 'Pribadi' : 'Siswa'}
         </h3>
+        <Separator />
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
             <FormField
@@ -87,25 +91,42 @@ function ProfileDetail({ user, token }: IProps) {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="purpose"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Tujuan Penggunaan</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Co: Untuk belajar mandiri" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {user.role === 'TEACHER' && (
+              <FormField
+                control={form.control}
+                name="purpose"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Tujuan Penggunaan</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Co: Untuk belajar mandiri" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+            {user.role === 'STUDENT' && (
+              <FormField
+                control={form.control}
+                name="class"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Kelas</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Co: X MIPA 1, 12B" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
             <FormField
               control={form.control}
               name="institution"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Asal Instansi</FormLabel>
+                  <FormLabel>Asal Instansi/Sekolah</FormLabel>
                   <FormControl>
                     <Input placeholder="Co: Universitas Indonesia" {...field} />
                   </FormControl>

@@ -16,7 +16,7 @@ async function Overview({ token }: IProps) {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="bg-blue-400 text-white">
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Total Ujian</CardTitle>
+            <CardTitle>Total Asesmen</CardTitle>
             <BookOpen size={28} />
           </CardHeader>
           <CardContent>

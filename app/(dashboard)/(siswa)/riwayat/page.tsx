@@ -28,14 +28,14 @@ async function RiwayatPage({ searchParams }: { searchParams: Promise<SearchParam
   return (
     <div className="space-y-4">
       <h3 className="font-semibold text-lg">
-        Riwayat Ujian
+        Riwayat Asesmen
       </h3>
       <Table className="w-full overflow-x-auto border">
-        <TableCaption>Daftar ujian yang telah kamu ikuti.</TableCaption>
+        <TableCaption>Daftar asesmen yang telah kamu ikuti.</TableCaption>
         <TableHeader>
           <TableRow className="bg-primary/50 hover:bg-primary/50">
             <TableHead className="pl-4 py-4">No</TableHead>
-            <TableHead className="py-4">Nama Ujian</TableHead>
+            <TableHead className="py-4">Nama Asesmen</TableHead>
             <TableHead className="py-4">Skor</TableHead>
             <TableHead className="py-4">Benar / Total</TableHead>
             <TableHead className="py-4">Status</TableHead>
@@ -70,7 +70,7 @@ async function RiwayatPage({ searchParams }: { searchParams: Promise<SearchParam
                 <TableCell className="py-4">{formatDate(submission.updatedAt, { withTime: true })}</TableCell>
                 <TableCell className="pr-4 py-4 space-x-2">
                   <Link
-                    href={`/ujian/${submission.examId}${!isProgressing ? `/preview?submissionId=${submission.id}` : ''}`}
+                    href={`/asesmen/${submission.examId}${!isProgressing ? `/preview?submissionId=${submission.id}` : ''}`}
                     target="_blank"
                   >
                     <Button variant="outline" size="icon">

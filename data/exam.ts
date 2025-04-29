@@ -190,7 +190,6 @@ export async function getAllExams({ token, page = 1, pageSize = 10 }: FetchParam
         createdAt: 'desc',
       },
       include: {
-        // Hitung jumlah submission untuk setiap ujian
         _count: {
           select: {
             questions: true,

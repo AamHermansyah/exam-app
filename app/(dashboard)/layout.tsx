@@ -9,16 +9,13 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
 
-async function LayoutDashboard({ children }: { children: ReactNode }) {
+async function DashboadLayout({ children }: { children: ReactNode }) {
   const token = (await cookies()).get('token');
   if (!token?.value) redirect('/login');
 
   const user = await getUserByToken(token.value);
-
-  if (!user) {
-    (await cookies()).delete('token');
-    redirect('/login');
-  };
+  if (!user) redirect('/404');
+  if (!user.isActive) redirect('/account-nonactivated');
 
   return (
     <SidebarProvider>
@@ -37,4 +34,4 @@ async function LayoutDashboard({ children }: { children: ReactNode }) {
   )
 }
 
-export default LayoutDashboard;
+export default DashboadLayout;

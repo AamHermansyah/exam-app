@@ -37,8 +37,8 @@ export const navigations = {
       isActive: true,
     },
     {
-      title: "Kelola Ujian",
-      url: "/kelola-ujian",
+      title: "Kelola Asesmen",
+      url: "/kelola-asesmen",
       icon: NotebookText,
       isActive: true,
     },
@@ -51,8 +51,8 @@ export const navigations = {
   ],
   siswa: [
     {
-      title: "Daftar Ujian",
-      url: "/daftar-ujian",
+      title: "Daftar Asesmen",
+      url: "/daftar-asesmen",
       icon: Pencil,
       isActive: true,
     },
@@ -66,7 +66,7 @@ export const navigations = {
 };
 
 export const rules = [
-  "Pastikan koneksi internet stabil selama ujian berlangsung.",
+  "Pastikan koneksi internet stabil selama asesmen berlangsung.",
   "Tidak diperkenankan membuka tab atau aplikasi lain.",
   "Setiap soal wajib dijawab sebelum mengumpulkan.",
   "Gunakan waktu sebaik mungkin, waktu akan terus berjalan.",
@@ -74,9 +74,9 @@ export const rules = [
 ];
 
 export const defaultDescription = `
-  <h2>Peraturan Ujian</h2>
+  <h2>Peraturan Asesmen</h2>
   <ul>
-    <li>Pastikan koneksi internet stabil selama ujian berlangsung.</li>
+    <li>Pastikan koneksi internet stabil selama asesmen berlangsung.</li>
     <li>Tidak diperkenankan membuka tab atau aplikasi lain.</li>
     <li>Setiap soal wajib dijawab sebelum mengumpulkan.</li>
     <li>Gunakan waktu sebaik mungkin, waktu akan terus berjalan.</li>

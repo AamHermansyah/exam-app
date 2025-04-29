@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 const tagsRegex = /^[A-Za-z]+(?:,[A-Za-z]+)*$/;
-// Schema untuk ujian secara keseluruhan
+
 export const examSchema = z.object({
-  title: z.string().min(1, "Judul ujian harus diisi"),
+  title: z.string().min(1, "Judul asesmen harus diisi"),
   tags: z
     .string()
     .min(1, "Tags harus diisi")

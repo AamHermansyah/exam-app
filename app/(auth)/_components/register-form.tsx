@@ -39,11 +39,13 @@ export function RegisterForm({
   const form = useForm<RegisterSchemaType>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
+      type,
       fullName: "",
       email: "",
       purpose: "",
       institution: "",
       password: "",
+      class: ""
     },
   })
 
@@ -107,25 +109,42 @@ export function RegisterForm({
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="purpose"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Tujuan Penggunaan</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Co: Untuk belajar mandiri" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {type === 'teacher' && (
+                <FormField
+                  control={form.control}
+                  name="purpose"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Tujuan Penggunaan</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Co: Untuk belajar mandiri" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+              {type === 'student' && (
+                <FormField
+                  control={form.control}
+                  name="class"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Kelas</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Co: X MIPA 1, 12B" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
               <FormField
                 control={form.control}
                 name="institution"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Asal Instansi</FormLabel>
+                    <FormLabel>Asal Instansi/Sekolah</FormLabel>
                     <FormControl>
                       <Input placeholder="Co: Universitas Indonesia" {...field} />
                     </FormControl>
@@ -147,21 +166,15 @@ export function RegisterForm({
                 )}
               />
               <FormError message={error} />
-              <div className="space-y-1">
-                <Button type="submit" className="w-full gap-2" disabled={loading}>
-                  {loading && <LoaderCircle className="w-4 h-4 animate-spin" />}
-                  Registrasi
-                </Button>
-                <div className="text-sm">
-                  Apakah anda {type === 'student' ? 'seorang guru' : 'hanya pengguna'}?{" "}
-                  <Link
-                    href={`/register${type === 'student' ? '/teacher' : ''}`}
-                    className="text-primary underline underline-offset-4"
-                  >
-                    Daftar disini
-                  </Link>
-                </div>
-              </div>
+              <Button
+                type="submit"
+                variant={type === 'student' ? 'default' : 'info'}
+                className="w-full gap-2"
+                disabled={loading}
+              >
+                {loading && <LoaderCircle className="w-4 h-4 animate-spin" />}
+                Registrasi {type === 'teacher' ? 'Guru' : ''}
+              </Button>
               <div className="text-center text-sm">
                 Sudah punya akun?{" "}
                 <Link href="/login" className="text-primary underline underline-offset-4">

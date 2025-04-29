@@ -24,13 +24,13 @@ async function NewExams({ token }: IProps) {
 
   return (
     <div className="space-y-4">
-      <h3 className="font-semibold text-lg">Ujian Terbaru</h3>
+      <h3 className="font-semibold text-lg">Asesmen Terbaru</h3>
       <Table className="w-full overflow-x-auto border">
-        <TableCaption>Daftar ujian yang tersedia dalam sistem.</TableCaption>
+        <TableCaption>Daftar asesmen yang tersedia dalam sistem.</TableCaption>
         <TableHeader>
           <TableRow className="bg-primary/50 hover:bg-primary/50">
             <TableHead className="pl-4 py-4">No</TableHead>
-            <TableHead className="py-4">Nama Ujian</TableHead>
+            <TableHead className="py-4">Nama Asesmen</TableHead>
             <TableHead className="py-4">Kategori</TableHead>
             <TableHead className="py-4">Tags</TableHead>
             <TableHead className="py-4">Jumlah Soal</TableHead>
@@ -43,7 +43,7 @@ async function NewExams({ token }: IProps) {
           {exams.map((exam, index) => (
             <TableRow key={exam.id}>
               <TableCell className="pl-4 py-4">{index + 1}</TableCell>
-              <TableCell className="py-4">
+              <TableCell className="py-4 max-w-[150px]">
                 {exam.title}
               </TableCell>
               <TableCell className="py-4 capitalize">
