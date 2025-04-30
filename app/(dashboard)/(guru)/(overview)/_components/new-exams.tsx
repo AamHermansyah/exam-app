@@ -32,6 +32,7 @@ async function NewExams({ token }: IProps) {
             <TableHead className="pl-4 py-4">No</TableHead>
             <TableHead className="py-4">Nama Asesmen</TableHead>
             <TableHead className="py-4">Kategori</TableHead>
+            <TableHead className="py-4">Status</TableHead>
             <TableHead className="py-4">Tags</TableHead>
             <TableHead className="py-4">Jumlah Soal</TableHead>
             <TableHead className="py-4">Durasi</TableHead>
@@ -48,6 +49,11 @@ async function NewExams({ token }: IProps) {
               </TableCell>
               <TableCell className="py-4 capitalize">
                 {exam.category.replaceAll('-', ' ')}
+              </TableCell>
+              <TableCell className="py-4">
+                <Badge variant={!exam.publishedAt ? 'info' : 'default'} className="rounded-full">
+                  {!exam.publishedAt ? 'Pending' : 'Publikasi'}
+                </Badge>
               </TableCell>
               <TableCell className="py-4 flex flex-wrap gap-1.5">
                 {exam.tags.split(',').map((tag) => (
