@@ -18,17 +18,24 @@ import { getAllExams } from '@/data/exam';
 import { Pagination } from '@/components/ui/pagination';
 import { formatDate } from '@/lib/utils';
 import DeleteAlert from './_components/delete-alert';
+import { getUserByToken } from '@/data/user';
+import { redirect, RedirectType } from 'next/navigation';
 
 async function KelolaUjianPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
   const page = (await searchParams).page;
   const token = (await cookies()).get('token');
+  const user = await getUserByToken(token!.value);
+  if (user!.role === 'STUDENT') {
+    redirect('/daftar-asesmen', 'replace' as RedirectType);
+  };
+
   const { data: exams, ...pagination } = await getAllExams({
     token: token?.value!,
     page: typeof page === 'string' && !isNaN(+page) ? +page : 1
   });
 
   return (
-    <div className="space-y-4">
+    <div className="flex-1 space-y-4 overflow-hidden">
       <div className="flex justify-between items-center">
         <h3 className="font-semibold text-lg">Kelola Asesmen</h3>
         <Link href="/kelola-asesmen/tambah">
@@ -42,6 +49,7 @@ async function KelolaUjianPage({ searchParams }: { searchParams: Promise<SearchP
             <TableHead className="pl-4 py-4">No</TableHead>
             <TableHead className="py-4">Nama Asesmen</TableHead>
             <TableHead className="py-4">Kategori</TableHead>
+            <TableHead className="py-4">Status</TableHead>
             <TableHead className="py-4">Tags</TableHead>
             <TableHead className="py-4">Jumlah Soal</TableHead>
             <TableHead className="py-4">Durasi</TableHead>
@@ -51,7 +59,7 @@ async function KelolaUjianPage({ searchParams }: { searchParams: Promise<SearchP
           </TableRow>
         </TableHeader>
         <TableBody>
-          {exams.map((exam, index) => (
+          {exams.length > 0 ? exams.map((exam, index) => (
             <TableRow key={exam.id}>
               <TableCell className="pl-4 py-4">{index + 1}</TableCell>
               <TableCell className="py-4 max-w-[150px]">
@@ -59,6 +67,11 @@ async function KelolaUjianPage({ searchParams }: { searchParams: Promise<SearchP
               </TableCell>
               <TableCell className="py-4 capitalize">
                 {exam.category.replaceAll('-', ' ')}
+              </TableCell>
+              <TableCell className="py-4">
+                <Badge variant={!exam.publishedAt ? 'info' : 'default'} className="rounded-full">
+                  {!exam.publishedAt ? 'Pending' : 'Publikasi'}
+                </Badge>
               </TableCell>
               <TableCell className="py-4 flex flex-wrap gap-1.5">
                 {exam.tags.split(',').map((tag) => (
@@ -92,7 +105,13 @@ async function KelolaUjianPage({ searchParams }: { searchParams: Promise<SearchP
                 />
               </TableCell>
             </TableRow>
-          ))}
+          )) : (
+            <TableRow>
+              <TableCell colSpan={10} className="px-4 py-4 text-center">
+                Asesmen masih kosong
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
       <div className="w-full flex justify-end">

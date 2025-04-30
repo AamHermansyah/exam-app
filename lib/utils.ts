@@ -97,8 +97,7 @@ export function handleCatchError(error: unknown, type: 'return' | 'throw' = 'ret
 
 export function cleanText(input: string): string {
   return input
-    .replace(/[^\x00-\x7F]/g, '') // hapus simbol aneh
-    .replace(/\t/g, ' ')          // tab jadi spasi
-    .replace(/\s+/g, ' ')         // hilangkan spasi ganda
-    .trim();                      // trim spasi di ujung
+    .replace(/[^\x00-\x7F]/g, '')
+    .replace(/\t/g, ' ')
+    .replace(/\s+/g, ' ')
 }

@@ -108,7 +108,7 @@ function ExamLayout({ data, token }: IProps) {
 
     startServer(() => {
       submitExam({
-        answers: submitAnswers,
+        submitAnswers,
         examId: exam.id,
         token
       })

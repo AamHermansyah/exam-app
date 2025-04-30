@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getAllStudents } from "@/data/user";
+import { getAllStudents, getUserByToken } from "@/data/user";
 import { formatDate } from "@/lib/utils";
 import { Pencil } from "lucide-react";
 import { SearchParams } from "next/dist/server/request/search-params";
@@ -17,10 +17,16 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 import NonActivateAlert from "./_layouts/nonactivate-alert";
 import { Badge } from "@/components/ui/badge";
+import { redirect, RedirectType } from "next/navigation";
 
 async function SiswaPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
   const page = (await searchParams).page;
   const token = (await cookies()).get('token');
+  const user = await getUserByToken(token!.value);
+  if (user!.role === 'STUDENT') {
+    redirect('/daftar-asesmen', 'replace' as RedirectType);
+  };
+
   const { data: students, ...pagination } = await getAllStudents({
     token: token?.value!,
     page: typeof page === 'string' && !isNaN(+page) ? +page : 1

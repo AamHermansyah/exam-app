@@ -47,10 +47,10 @@ type SubmitAnswerInput = {
 type SubmitExamInput = {
   token: string;
   examId: string;
-  answers: SubmitAnswerInput[];
+  submitAnswers: SubmitAnswerInput[];
 };
 
-export async function submitExam({ token, examId, answers }: SubmitExamInput) {
+export async function submitExam({ token, examId, submitAnswers }: SubmitExamInput) {
   try {
     const decoded = jwt.verify(token, dotEnvs.jwtSecret as string) as TokenPayload;
 
@@ -97,13 +97,19 @@ export async function submitExam({ token, examId, answers }: SubmitExamInput) {
     // Ambil semua pertanyaan dan jawaban dari DB untuk penilaian
     const allQuestions = await prisma.question.findMany({
       where: { examId },
-      include: { answers: true },
+      select: {
+        id: true,
+        answers: true,
+        correctAnswerIndex: true,
+        type: true
+      },
     });
 
     let totalCorrect = 0;
+    const scores: { questionId: string, score: number }[] = [];
 
     for (const question of allQuestions) {
-      const studentAnswer = answers.find((a) => a.questionId === question.id);
+      const studentAnswer = submitAnswers.find((a) => a.questionId === question.id);
       if (!studentAnswer) continue;
 
       let correctAnswerIds: string[] = [];
@@ -126,10 +132,15 @@ export async function submitExam({ token, examId, answers }: SubmitExamInput) {
           : JSON.stringify(correctAnswerIds) === JSON.stringify(selectedIds);
 
       if (isCorrect) totalCorrect++;
+
+      // Count score per question
+      const matchedIds = selectedIds.filter(id => correctAnswerIds.includes(id));
+      scores.push({ questionId: question.id, score: matchedIds.length });
     }
 
-    const totalScore = (totalCorrect / allQuestions.length) * 100;
-    const isPassed = exam?.minScore ? totalScore >= exam.minScore : false;
+    const totalScore = scores.reduce((acc, curr) => acc + curr.score, 0);
+    const percentage = (totalScore / exam.maxScore) * 100;
+    const isPassed = exam?.minScore ? percentage >= exam.minScore : false;
 
     //  submission
     const submission = await prisma.examSubmission.update({
@@ -137,13 +148,18 @@ export async function submitExam({ token, examId, answers }: SubmitExamInput) {
       data: {
         correct: totalCorrect,
         incorrect: allQuestions.length - totalCorrect,
-        score: totalScore,
+        score: percentage,
         passed: isPassed,
         answers: {
-          create: answers.map((ans) => ({
-            questionId: ans.questionId,
-            selectedAnswerIds: JSON.stringify(ans.selectedAnswerIds),
-          })),
+          create: submitAnswers.map((ans) => {
+            const questionScore = scores.find(s => s.questionId === ans.questionId)?.score || 0;
+
+            return {
+              questionId: ans.questionId,
+              selectedAnswerIds: JSON.stringify(ans.selectedAnswerIds),
+              score: questionScore,
+            };
+          }),
         },
       },
     });

@@ -55,14 +55,18 @@ export default function EditUjianLayout({ token, data }: IProps) {
               <p className="font-medium leading-none">{questions.length} Soal</p>
             </div>
             <div className="space-y-1">
-              <h2 className="text-sm text-primary">Skor Minimal</h2>
-              <p className="font-medium leading-none">{exam.minScore}/100</p>
+              <h2 className="text-sm text-primary">Skor Minimal (%)</h2>
+              <p className="font-medium leading-none">{exam.minScore}/100%</p>
             </div>
             <div className="space-y-1">
               <h2 className="text-sm text-primary">Kategori</h2>
               <p className="font-medium leading-none capitalize">
                 {exam.category.replaceAll('-', ' ')}
               </p>
+            </div>
+            <div className="space-y-1">
+              <h2 className="text-sm text-primary">Total Skor</h2>
+              <p className="font-medium leading-none">{exam.maxScore} Poin</p>
             </div>
           </div>
           <div className="space-y-1">

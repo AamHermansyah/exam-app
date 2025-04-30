@@ -8,6 +8,7 @@ async function StudentLayout({ children }: { children: ReactNode }) {
   const user = await getUserByToken(token!.value);
 
   if (user!.role === 'TEACHER') redirect('/404', 'replace' as RedirectType);
+  if (!user!.isActive) redirect('/account-nonactivated', 'replace' as RedirectType);
 
   return children;
 }

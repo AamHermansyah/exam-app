@@ -8,9 +8,7 @@ import { getUserByToken } from '@/data/user';
 
 async function AccountNotActivatedPage() {
   const token = (await cookies()).get('token');
-  if (!token?.value) redirect('/login');
-
-  const user = await getUserByToken(token.value);
+  const user = await getUserByToken(token!.value);
   if (!user) redirect('/404');
   if (user.isActive) redirect('/');
 

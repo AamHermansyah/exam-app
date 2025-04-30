@@ -25,7 +25,7 @@ import InputPassword from "@/components/core/input-password"
 import Link from "next/link"
 import { loginSchema, LoginSchemaType } from "@/schemas/login"
 import { useState, useTransition } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { loginUser } from "@/actions/auth"
 import { toast } from "sonner"
 import { FormError } from "@/components/shared/form-error"
@@ -38,6 +38,8 @@ export function LoginForm({
   const [loading, startServer] = useTransition();
   const [error, setError] = useState("");
   const navigate = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get('callbackUrl');
 
   const form = useForm<LoginSchemaType>({
     resolver: zodResolver(loginSchema),
@@ -47,6 +49,8 @@ export function LoginForm({
     },
   })
 
+  console.log(callbackUrl)
+
   function onSubmit(values: LoginSchemaType) {
     setError("");
     startServer(() => {
@@ -54,7 +58,7 @@ export function LoginForm({
         .then((data) => {
           if (data.status === 'success') {
             toast.success('Login berhasil!');
-            navigate.push('/');
+            navigate.push(callbackUrl || '/');
           } else {
             setError(data.message!);
           }

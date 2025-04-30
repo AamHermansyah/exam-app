@@ -98,6 +98,7 @@ export async function getExamSubmissionDetail(submissionId: string, token: strin
           ...ans,
           isSelectedByUser: selectedAnswerIds.includes(ans.id),
         })),
+        score: userAnswer?.score || 0
       };
     });
 
@@ -114,7 +115,8 @@ export async function getExamSubmissionDetail(submissionId: string, token: strin
           id: submission.exam.id,
           title: submission.exam.title,
           questions: questionMap,
-          duration: submission.exam.duration
+          duration: submission.exam.duration,
+          maxScore: submission.exam.maxScore
         },
         user: submission.user
       },
@@ -152,7 +154,19 @@ export async function getExamSubmissionByExamId(
           select: {
             id: true,
             email: true,
-            fullName: true
+            fullName: true,
+            institution: true,
+            class: true
+          }
+        },
+        answers: {
+          include: {
+            question: true
+          }
+        },
+        exam: {
+          select: {
+            title: true,
           }
         }
       },

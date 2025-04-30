@@ -2694,11 +2694,13 @@ export namespace Prisma {
   export type ExamAvgAggregateOutputType = {
     duration: number | null
     minScore: number | null
+    maxScore: number | null
   }
 
   export type ExamSumAggregateOutputType = {
     duration: number | null
     minScore: number | null
+    maxScore: number | null
   }
 
   export type ExamMinAggregateOutputType = {
@@ -2708,6 +2710,7 @@ export namespace Prisma {
     category: string | null
     duration: number | null
     minScore: number | null
+    maxScore: number | null
     description: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -2724,6 +2727,7 @@ export namespace Prisma {
     category: string | null
     duration: number | null
     minScore: number | null
+    maxScore: number | null
     description: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -2740,6 +2744,7 @@ export namespace Prisma {
     category: number
     duration: number
     minScore: number
+    maxScore: number
     description: number
     createdAt: number
     updatedAt: number
@@ -2754,11 +2759,13 @@ export namespace Prisma {
   export type ExamAvgAggregateInputType = {
     duration?: true
     minScore?: true
+    maxScore?: true
   }
 
   export type ExamSumAggregateInputType = {
     duration?: true
     minScore?: true
+    maxScore?: true
   }
 
   export type ExamMinAggregateInputType = {
@@ -2768,6 +2775,7 @@ export namespace Prisma {
     category?: true
     duration?: true
     minScore?: true
+    maxScore?: true
     description?: true
     createdAt?: true
     updatedAt?: true
@@ -2784,6 +2792,7 @@ export namespace Prisma {
     category?: true
     duration?: true
     minScore?: true
+    maxScore?: true
     description?: true
     createdAt?: true
     updatedAt?: true
@@ -2800,6 +2809,7 @@ export namespace Prisma {
     category?: true
     duration?: true
     minScore?: true
+    maxScore?: true
     description?: true
     createdAt?: true
     updatedAt?: true
@@ -2903,6 +2913,7 @@ export namespace Prisma {
     category: string
     duration: number
     minScore: number | null
+    maxScore: number
     description: string | null
     createdAt: Date
     updatedAt: Date
@@ -2938,6 +2949,7 @@ export namespace Prisma {
     category?: boolean
     duration?: boolean
     minScore?: boolean
+    maxScore?: boolean
     description?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -2958,6 +2970,7 @@ export namespace Prisma {
     category?: boolean
     duration?: boolean
     minScore?: boolean
+    maxScore?: boolean
     description?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -2975,6 +2988,7 @@ export namespace Prisma {
     category?: boolean
     duration?: boolean
     minScore?: boolean
+    maxScore?: boolean
     description?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -2992,6 +3006,7 @@ export namespace Prisma {
     category?: boolean
     duration?: boolean
     minScore?: boolean
+    maxScore?: boolean
     description?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -3001,7 +3016,7 @@ export namespace Prisma {
     authorId?: boolean
   }
 
-  export type ExamOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "tags" | "category" | "duration" | "minScore" | "description" | "createdAt" | "updatedAt" | "publishedAt" | "isDeleted" | "deletedAt" | "authorId", ExtArgs["result"]["exam"]>
+  export type ExamOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "tags" | "category" | "duration" | "minScore" | "maxScore" | "description" | "createdAt" | "updatedAt" | "publishedAt" | "isDeleted" | "deletedAt" | "authorId", ExtArgs["result"]["exam"]>
   export type ExamInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     author?: boolean | UserDefaultArgs<ExtArgs>
     questions?: boolean | Exam$questionsArgs<ExtArgs>
@@ -3029,6 +3044,7 @@ export namespace Prisma {
       category: string
       duration: number
       minScore: number | null
+      maxScore: number
       description: string | null
       createdAt: Date
       updatedAt: Date
@@ -3468,6 +3484,7 @@ export namespace Prisma {
     readonly category: FieldRef<"Exam", 'String'>
     readonly duration: FieldRef<"Exam", 'Int'>
     readonly minScore: FieldRef<"Exam", 'Int'>
+    readonly maxScore: FieldRef<"Exam", 'Int'>
     readonly description: FieldRef<"Exam", 'String'>
     readonly createdAt: FieldRef<"Exam", 'DateTime'>
     readonly updatedAt: FieldRef<"Exam", 'DateTime'>
@@ -7380,8 +7397,18 @@ export namespace Prisma {
 
   export type AggregateSubmissionAnswer = {
     _count: SubmissionAnswerCountAggregateOutputType | null
+    _avg: SubmissionAnswerAvgAggregateOutputType | null
+    _sum: SubmissionAnswerSumAggregateOutputType | null
     _min: SubmissionAnswerMinAggregateOutputType | null
     _max: SubmissionAnswerMaxAggregateOutputType | null
+  }
+
+  export type SubmissionAnswerAvgAggregateOutputType = {
+    score: number | null
+  }
+
+  export type SubmissionAnswerSumAggregateOutputType = {
+    score: number | null
   }
 
   export type SubmissionAnswerMinAggregateOutputType = {
@@ -7389,6 +7416,7 @@ export namespace Prisma {
     submissionId: string | null
     questionId: string | null
     selectedAnswerIds: string | null
+    score: number | null
   }
 
   export type SubmissionAnswerMaxAggregateOutputType = {
@@ -7396,6 +7424,7 @@ export namespace Prisma {
     submissionId: string | null
     questionId: string | null
     selectedAnswerIds: string | null
+    score: number | null
   }
 
   export type SubmissionAnswerCountAggregateOutputType = {
@@ -7403,15 +7432,25 @@ export namespace Prisma {
     submissionId: number
     questionId: number
     selectedAnswerIds: number
+    score: number
     _all: number
   }
 
+
+  export type SubmissionAnswerAvgAggregateInputType = {
+    score?: true
+  }
+
+  export type SubmissionAnswerSumAggregateInputType = {
+    score?: true
+  }
 
   export type SubmissionAnswerMinAggregateInputType = {
     id?: true
     submissionId?: true
     questionId?: true
     selectedAnswerIds?: true
+    score?: true
   }
 
   export type SubmissionAnswerMaxAggregateInputType = {
@@ -7419,6 +7458,7 @@ export namespace Prisma {
     submissionId?: true
     questionId?: true
     selectedAnswerIds?: true
+    score?: true
   }
 
   export type SubmissionAnswerCountAggregateInputType = {
@@ -7426,6 +7466,7 @@ export namespace Prisma {
     submissionId?: true
     questionId?: true
     selectedAnswerIds?: true
+    score?: true
     _all?: true
   }
 
@@ -7467,6 +7508,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: SubmissionAnswerAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SubmissionAnswerSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: SubmissionAnswerMinAggregateInputType
@@ -7497,6 +7550,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: SubmissionAnswerCountAggregateInputType | true
+    _avg?: SubmissionAnswerAvgAggregateInputType
+    _sum?: SubmissionAnswerSumAggregateInputType
     _min?: SubmissionAnswerMinAggregateInputType
     _max?: SubmissionAnswerMaxAggregateInputType
   }
@@ -7506,7 +7561,10 @@ export namespace Prisma {
     submissionId: string
     questionId: string
     selectedAnswerIds: string
+    score: number
     _count: SubmissionAnswerCountAggregateOutputType | null
+    _avg: SubmissionAnswerAvgAggregateOutputType | null
+    _sum: SubmissionAnswerSumAggregateOutputType | null
     _min: SubmissionAnswerMinAggregateOutputType | null
     _max: SubmissionAnswerMaxAggregateOutputType | null
   }
@@ -7530,6 +7588,7 @@ export namespace Prisma {
     submissionId?: boolean
     questionId?: boolean
     selectedAnswerIds?: boolean
+    score?: boolean
     submission?: boolean | ExamSubmissionDefaultArgs<ExtArgs>
     question?: boolean | QuestionDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["submissionAnswer"]>
@@ -7539,6 +7598,7 @@ export namespace Prisma {
     submissionId?: boolean
     questionId?: boolean
     selectedAnswerIds?: boolean
+    score?: boolean
     submission?: boolean | ExamSubmissionDefaultArgs<ExtArgs>
     question?: boolean | QuestionDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["submissionAnswer"]>
@@ -7548,6 +7608,7 @@ export namespace Prisma {
     submissionId?: boolean
     questionId?: boolean
     selectedAnswerIds?: boolean
+    score?: boolean
     submission?: boolean | ExamSubmissionDefaultArgs<ExtArgs>
     question?: boolean | QuestionDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["submissionAnswer"]>
@@ -7557,9 +7618,10 @@ export namespace Prisma {
     submissionId?: boolean
     questionId?: boolean
     selectedAnswerIds?: boolean
+    score?: boolean
   }
 
-  export type SubmissionAnswerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "submissionId" | "questionId" | "selectedAnswerIds", ExtArgs["result"]["submissionAnswer"]>
+  export type SubmissionAnswerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "submissionId" | "questionId" | "selectedAnswerIds" | "score", ExtArgs["result"]["submissionAnswer"]>
   export type SubmissionAnswerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     submission?: boolean | ExamSubmissionDefaultArgs<ExtArgs>
     question?: boolean | QuestionDefaultArgs<ExtArgs>
@@ -7584,6 +7646,7 @@ export namespace Prisma {
       submissionId: string
       questionId: string
       selectedAnswerIds: string
+      score: number
     }, ExtArgs["result"]["submissionAnswer"]>
     composites: {}
   }
@@ -8013,6 +8076,7 @@ export namespace Prisma {
     readonly submissionId: FieldRef<"SubmissionAnswer", 'String'>
     readonly questionId: FieldRef<"SubmissionAnswer", 'String'>
     readonly selectedAnswerIds: FieldRef<"SubmissionAnswer", 'String'>
+    readonly score: FieldRef<"SubmissionAnswer", 'Int'>
   }
     
 
@@ -8465,6 +8529,7 @@ export namespace Prisma {
     category: 'category',
     duration: 'duration',
     minScore: 'minScore',
+    maxScore: 'maxScore',
     description: 'description',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
@@ -8521,7 +8586,8 @@ export namespace Prisma {
     id: 'id',
     submissionId: 'submissionId',
     questionId: 'questionId',
-    selectedAnswerIds: 'selectedAnswerIds'
+    selectedAnswerIds: 'selectedAnswerIds',
+    score: 'score'
   };
 
   export type SubmissionAnswerScalarFieldEnum = (typeof SubmissionAnswerScalarFieldEnum)[keyof typeof SubmissionAnswerScalarFieldEnum]
@@ -8748,6 +8814,7 @@ export namespace Prisma {
     category?: StringFilter<"Exam"> | string
     duration?: IntFilter<"Exam"> | number
     minScore?: IntNullableFilter<"Exam"> | number | null
+    maxScore?: IntFilter<"Exam"> | number
     description?: StringNullableFilter<"Exam"> | string | null
     createdAt?: DateTimeFilter<"Exam"> | Date | string
     updatedAt?: DateTimeFilter<"Exam"> | Date | string
@@ -8767,6 +8834,7 @@ export namespace Prisma {
     category?: SortOrder
     duration?: SortOrder
     minScore?: SortOrderInput | SortOrder
+    maxScore?: SortOrder
     description?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -8789,6 +8857,7 @@ export namespace Prisma {
     category?: StringFilter<"Exam"> | string
     duration?: IntFilter<"Exam"> | number
     minScore?: IntNullableFilter<"Exam"> | number | null
+    maxScore?: IntFilter<"Exam"> | number
     description?: StringNullableFilter<"Exam"> | string | null
     createdAt?: DateTimeFilter<"Exam"> | Date | string
     updatedAt?: DateTimeFilter<"Exam"> | Date | string
@@ -8808,6 +8877,7 @@ export namespace Prisma {
     category?: SortOrder
     duration?: SortOrder
     minScore?: SortOrderInput | SortOrder
+    maxScore?: SortOrder
     description?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -8832,6 +8902,7 @@ export namespace Prisma {
     category?: StringWithAggregatesFilter<"Exam"> | string
     duration?: IntWithAggregatesFilter<"Exam"> | number
     minScore?: IntNullableWithAggregatesFilter<"Exam"> | number | null
+    maxScore?: IntWithAggregatesFilter<"Exam"> | number
     description?: StringNullableWithAggregatesFilter<"Exam"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Exam"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Exam"> | Date | string
@@ -9065,6 +9136,7 @@ export namespace Prisma {
     submissionId?: StringFilter<"SubmissionAnswer"> | string
     questionId?: StringFilter<"SubmissionAnswer"> | string
     selectedAnswerIds?: StringFilter<"SubmissionAnswer"> | string
+    score?: IntFilter<"SubmissionAnswer"> | number
     submission?: XOR<ExamSubmissionScalarRelationFilter, ExamSubmissionWhereInput>
     question?: XOR<QuestionScalarRelationFilter, QuestionWhereInput>
   }
@@ -9074,6 +9146,7 @@ export namespace Prisma {
     submissionId?: SortOrder
     questionId?: SortOrder
     selectedAnswerIds?: SortOrder
+    score?: SortOrder
     submission?: ExamSubmissionOrderByWithRelationInput
     question?: QuestionOrderByWithRelationInput
   }
@@ -9086,6 +9159,7 @@ export namespace Prisma {
     submissionId?: StringFilter<"SubmissionAnswer"> | string
     questionId?: StringFilter<"SubmissionAnswer"> | string
     selectedAnswerIds?: StringFilter<"SubmissionAnswer"> | string
+    score?: IntFilter<"SubmissionAnswer"> | number
     submission?: XOR<ExamSubmissionScalarRelationFilter, ExamSubmissionWhereInput>
     question?: XOR<QuestionScalarRelationFilter, QuestionWhereInput>
   }, "id">
@@ -9095,9 +9169,12 @@ export namespace Prisma {
     submissionId?: SortOrder
     questionId?: SortOrder
     selectedAnswerIds?: SortOrder
+    score?: SortOrder
     _count?: SubmissionAnswerCountOrderByAggregateInput
+    _avg?: SubmissionAnswerAvgOrderByAggregateInput
     _max?: SubmissionAnswerMaxOrderByAggregateInput
     _min?: SubmissionAnswerMinOrderByAggregateInput
+    _sum?: SubmissionAnswerSumOrderByAggregateInput
   }
 
   export type SubmissionAnswerScalarWhereWithAggregatesInput = {
@@ -9108,6 +9185,7 @@ export namespace Prisma {
     submissionId?: StringWithAggregatesFilter<"SubmissionAnswer"> | string
     questionId?: StringWithAggregatesFilter<"SubmissionAnswer"> | string
     selectedAnswerIds?: StringWithAggregatesFilter<"SubmissionAnswer"> | string
+    score?: IntWithAggregatesFilter<"SubmissionAnswer"> | number
   }
 
   export type UserCreateInput = {
@@ -9223,6 +9301,7 @@ export namespace Prisma {
     category: string
     duration: number
     minScore?: number | null
+    maxScore?: number
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9241,6 +9320,7 @@ export namespace Prisma {
     category: string
     duration: number
     minScore?: number | null
+    maxScore?: number
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9259,6 +9339,7 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
     minScore?: NullableIntFieldUpdateOperationsInput | number | null
+    maxScore?: IntFieldUpdateOperationsInput | number
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9277,6 +9358,7 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
     minScore?: NullableIntFieldUpdateOperationsInput | number | null
+    maxScore?: IntFieldUpdateOperationsInput | number
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9295,6 +9377,7 @@ export namespace Prisma {
     category: string
     duration: number
     minScore?: number | null
+    maxScore?: number
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9311,6 +9394,7 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
     minScore?: NullableIntFieldUpdateOperationsInput | number | null
+    maxScore?: IntFieldUpdateOperationsInput | number
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9326,6 +9410,7 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
     minScore?: NullableIntFieldUpdateOperationsInput | number | null
+    maxScore?: IntFieldUpdateOperationsInput | number
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9563,6 +9648,7 @@ export namespace Prisma {
   export type SubmissionAnswerCreateInput = {
     id?: string
     selectedAnswerIds: string
+    score?: number
     submission: ExamSubmissionCreateNestedOneWithoutAnswersInput
     question: QuestionCreateNestedOneWithoutSubmissionAnswerInput
   }
@@ -9572,11 +9658,13 @@ export namespace Prisma {
     submissionId: string
     questionId: string
     selectedAnswerIds: string
+    score?: number
   }
 
   export type SubmissionAnswerUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     selectedAnswerIds?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
     submission?: ExamSubmissionUpdateOneRequiredWithoutAnswersNestedInput
     question?: QuestionUpdateOneRequiredWithoutSubmissionAnswerNestedInput
   }
@@ -9586,6 +9674,7 @@ export namespace Prisma {
     submissionId?: StringFieldUpdateOperationsInput | string
     questionId?: StringFieldUpdateOperationsInput | string
     selectedAnswerIds?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
   }
 
   export type SubmissionAnswerCreateManyInput = {
@@ -9593,11 +9682,13 @@ export namespace Prisma {
     submissionId: string
     questionId: string
     selectedAnswerIds: string
+    score?: number
   }
 
   export type SubmissionAnswerUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     selectedAnswerIds?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
   }
 
   export type SubmissionAnswerUncheckedUpdateManyInput = {
@@ -9605,6 +9696,7 @@ export namespace Prisma {
     submissionId?: StringFieldUpdateOperationsInput | string
     questionId?: StringFieldUpdateOperationsInput | string
     selectedAnswerIds?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -9850,6 +9942,7 @@ export namespace Prisma {
     category?: SortOrder
     duration?: SortOrder
     minScore?: SortOrder
+    maxScore?: SortOrder
     description?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -9862,6 +9955,7 @@ export namespace Prisma {
   export type ExamAvgOrderByAggregateInput = {
     duration?: SortOrder
     minScore?: SortOrder
+    maxScore?: SortOrder
   }
 
   export type ExamMaxOrderByAggregateInput = {
@@ -9871,6 +9965,7 @@ export namespace Prisma {
     category?: SortOrder
     duration?: SortOrder
     minScore?: SortOrder
+    maxScore?: SortOrder
     description?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -9887,6 +9982,7 @@ export namespace Prisma {
     category?: SortOrder
     duration?: SortOrder
     minScore?: SortOrder
+    maxScore?: SortOrder
     description?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -9899,6 +9995,7 @@ export namespace Prisma {
   export type ExamSumOrderByAggregateInput = {
     duration?: SortOrder
     minScore?: SortOrder
+    maxScore?: SortOrder
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -10130,6 +10227,11 @@ export namespace Prisma {
     submissionId?: SortOrder
     questionId?: SortOrder
     selectedAnswerIds?: SortOrder
+    score?: SortOrder
+  }
+
+  export type SubmissionAnswerAvgOrderByAggregateInput = {
+    score?: SortOrder
   }
 
   export type SubmissionAnswerMaxOrderByAggregateInput = {
@@ -10137,6 +10239,7 @@ export namespace Prisma {
     submissionId?: SortOrder
     questionId?: SortOrder
     selectedAnswerIds?: SortOrder
+    score?: SortOrder
   }
 
   export type SubmissionAnswerMinOrderByAggregateInput = {
@@ -10144,6 +10247,11 @@ export namespace Prisma {
     submissionId?: SortOrder
     questionId?: SortOrder
     selectedAnswerIds?: SortOrder
+    score?: SortOrder
+  }
+
+  export type SubmissionAnswerSumOrderByAggregateInput = {
+    score?: SortOrder
   }
 
   export type ExamCreateNestedManyWithoutAuthorInput = {
@@ -10841,6 +10949,7 @@ export namespace Prisma {
     category: string
     duration: number
     minScore?: number | null
+    maxScore?: number
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -10858,6 +10967,7 @@ export namespace Prisma {
     category: string
     duration: number
     minScore?: number | null
+    maxScore?: number
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -10940,6 +11050,7 @@ export namespace Prisma {
     category?: StringFilter<"Exam"> | string
     duration?: IntFilter<"Exam"> | number
     minScore?: IntNullableFilter<"Exam"> | number | null
+    maxScore?: IntFilter<"Exam"> | number
     description?: StringNullableFilter<"Exam"> | string | null
     createdAt?: DateTimeFilter<"Exam"> | Date | string
     updatedAt?: DateTimeFilter<"Exam"> | Date | string
@@ -11180,6 +11291,7 @@ export namespace Prisma {
     category: string
     duration: number
     minScore?: number | null
+    maxScore?: number
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11197,6 +11309,7 @@ export namespace Prisma {
     category: string
     duration: number
     minScore?: number | null
+    maxScore?: number
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11237,6 +11350,7 @@ export namespace Prisma {
   export type SubmissionAnswerCreateWithoutQuestionInput = {
     id?: string
     selectedAnswerIds: string
+    score?: number
     submission: ExamSubmissionCreateNestedOneWithoutAnswersInput
   }
 
@@ -11244,6 +11358,7 @@ export namespace Prisma {
     id?: string
     submissionId: string
     selectedAnswerIds: string
+    score?: number
   }
 
   export type SubmissionAnswerCreateOrConnectWithoutQuestionInput = {
@@ -11274,6 +11389,7 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
     minScore?: NullableIntFieldUpdateOperationsInput | number | null
+    maxScore?: IntFieldUpdateOperationsInput | number
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11291,6 +11407,7 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
     minScore?: NullableIntFieldUpdateOperationsInput | number | null
+    maxScore?: IntFieldUpdateOperationsInput | number
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11351,6 +11468,7 @@ export namespace Prisma {
     submissionId?: StringFilter<"SubmissionAnswer"> | string
     questionId?: StringFilter<"SubmissionAnswer"> | string
     selectedAnswerIds?: StringFilter<"SubmissionAnswer"> | string
+    score?: IntFilter<"SubmissionAnswer"> | number
   }
 
   export type QuestionCreateWithoutAnswersInput = {
@@ -11424,6 +11542,7 @@ export namespace Prisma {
     category: string
     duration: number
     minScore?: number | null
+    maxScore?: number
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11441,6 +11560,7 @@ export namespace Prisma {
     category: string
     duration: number
     minScore?: number | null
+    maxScore?: number
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11494,6 +11614,7 @@ export namespace Prisma {
   export type SubmissionAnswerCreateWithoutSubmissionInput = {
     id?: string
     selectedAnswerIds: string
+    score?: number
     question: QuestionCreateNestedOneWithoutSubmissionAnswerInput
   }
 
@@ -11501,6 +11622,7 @@ export namespace Prisma {
     id?: string
     questionId: string
     selectedAnswerIds: string
+    score?: number
   }
 
   export type SubmissionAnswerCreateOrConnectWithoutSubmissionInput = {
@@ -11531,6 +11653,7 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
     minScore?: NullableIntFieldUpdateOperationsInput | number | null
+    maxScore?: IntFieldUpdateOperationsInput | number
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11548,6 +11671,7 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
     minScore?: NullableIntFieldUpdateOperationsInput | number | null
+    maxScore?: IntFieldUpdateOperationsInput | number
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11754,6 +11878,7 @@ export namespace Prisma {
     category: string
     duration: number
     minScore?: number | null
+    maxScore?: number
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11781,6 +11906,7 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
     minScore?: NullableIntFieldUpdateOperationsInput | number | null
+    maxScore?: IntFieldUpdateOperationsInput | number
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11798,6 +11924,7 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
     minScore?: NullableIntFieldUpdateOperationsInput | number | null
+    maxScore?: IntFieldUpdateOperationsInput | number
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11815,6 +11942,7 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     duration?: IntFieldUpdateOperationsInput | number
     minScore?: NullableIntFieldUpdateOperationsInput | number | null
+    maxScore?: IntFieldUpdateOperationsInput | number
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11965,6 +12093,7 @@ export namespace Prisma {
     id?: string
     submissionId: string
     selectedAnswerIds: string
+    score?: number
   }
 
   export type AnswerUpdateWithoutQuestionInput = {
@@ -11988,6 +12117,7 @@ export namespace Prisma {
   export type SubmissionAnswerUpdateWithoutQuestionInput = {
     id?: StringFieldUpdateOperationsInput | string
     selectedAnswerIds?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
     submission?: ExamSubmissionUpdateOneRequiredWithoutAnswersNestedInput
   }
 
@@ -11995,23 +12125,27 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     submissionId?: StringFieldUpdateOperationsInput | string
     selectedAnswerIds?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
   }
 
   export type SubmissionAnswerUncheckedUpdateManyWithoutQuestionInput = {
     id?: StringFieldUpdateOperationsInput | string
     submissionId?: StringFieldUpdateOperationsInput | string
     selectedAnswerIds?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
   }
 
   export type SubmissionAnswerCreateManySubmissionInput = {
     id?: string
     questionId: string
     selectedAnswerIds: string
+    score?: number
   }
 
   export type SubmissionAnswerUpdateWithoutSubmissionInput = {
     id?: StringFieldUpdateOperationsInput | string
     selectedAnswerIds?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
     question?: QuestionUpdateOneRequiredWithoutSubmissionAnswerNestedInput
   }
 
@@ -12019,12 +12153,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     questionId?: StringFieldUpdateOperationsInput | string
     selectedAnswerIds?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
   }
 
   export type SubmissionAnswerUncheckedUpdateManyWithoutSubmissionInput = {
     id?: StringFieldUpdateOperationsInput | string
     questionId?: StringFieldUpdateOperationsInput | string
     selectedAnswerIds?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
   }
 
 

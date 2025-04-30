@@ -60,6 +60,8 @@ export async function createOrEditQuestionWithAnswers(
     }
 
     if (type === 'create') {
+      let score = questionType === 'RADIO' ? 1 : answers.filter((a) => a.isCorrect).length;
+
       const newQuestion = await prisma.question.create({
         data: {
           title,
@@ -82,6 +84,15 @@ export async function createOrEditQuestionWithAnswers(
         },
       });
 
+      await prisma.exam.update({
+        where: { id: newQuestion.examId },
+        data: {
+          maxScore: {
+            increment: score
+          }
+        }
+      });
+
       return {
         status: 'success',
         data: newQuestion,
@@ -96,7 +107,22 @@ export async function createOrEditQuestionWithAnswers(
         };
       }
 
-      // Update question
+      const question = await prisma.question.findUnique({
+        where: { id: questionId },
+        select: {
+          id: true,
+          answers: true,
+          examId: true
+        }
+      });
+
+      if (!question) {
+        return {
+          status: 'error',
+          message: 'Question not found',
+        };
+      }
+
       const updatedQuestion = await prisma.question.update({
         where: { id: questionId },
         data: {
@@ -116,7 +142,7 @@ export async function createOrEditQuestionWithAnswers(
       });
 
       // Create new answers
-      const newAnswers = await prisma.answer.createMany({
+      await prisma.answer.createMany({
         data: answers.map((answer) => ({
           answerText: answer.answerText,
           isCorrect: answer.isCorrect,
@@ -124,14 +150,20 @@ export async function createOrEditQuestionWithAnswers(
         })),
       });
 
-      const fullData = await prisma.question.findUnique({
-        where: { id: updatedQuestion.id },
-        include: { answers: true },
+      const score = questionType === 'RADIO' ? 1 : question.answers.filter((a) => a.isCorrect).length;
+      const currentScore = questionType === 'RADIO' ? 1 : answers.filter((a) => a.isCorrect).length;
+      const scoreDifference = currentScore - score;
+      await prisma.exam.update({
+        where: { id: question.examId },
+        data: {
+          maxScore: {
+            increment: scoreDifference,
+          },
+        },
       });
 
       return {
         status: 'success',
-        data: fullData,
       };
     }
 

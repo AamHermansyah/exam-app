@@ -15,11 +15,12 @@ interface IProps {
 }
 
 type ExamSubmissionType = ExamSubmission & {
-  exam: Pick<Exam, 'id' | 'title' | 'duration'> & {
+  exam: Pick<Exam, 'id' | 'title' | 'duration' | 'maxScore'> & {
     questions: (Question & {
       answers: (Answer & {
         isSelectedByUser: boolean;
       })[];
+      score: number;
     })[]
   };
   user: Pick<User, 'id' | 'fullName'>;
@@ -29,11 +30,11 @@ function PreviewLayout({ data, roleSearchParams }: IProps) {
   const examSubmission = data as ExamSubmissionType;
   const questions = examSubmission.exam.questions;
 
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-  const currentQuestion = questions[currentQuestionIndex]
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const currentQuestion = questions[currentQuestionIndex];
 
-  const isFirst = currentQuestionIndex === 0
-  const isLast = currentQuestionIndex === questions.length - 1
+  const isFirst = currentQuestionIndex === 0;
+  const isLast = currentQuestionIndex === questions.length - 1;
 
   return (
     <div className="w-full h-full flex flex-col justify-center items-center">
@@ -56,8 +57,12 @@ function PreviewLayout({ data, roleSearchParams }: IProps) {
               <p className="font-medium">{examSubmission.user.fullName}</p>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Skor:</p>
-              <p className="font-medium">{examSubmission.score}/100</p>
+              <p className="text-sm text-muted-foreground">Total Skor:</p>
+              <p className="font-medium">{examSubmission.exam.maxScore} Poin</p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Skor (%):</p>
+              <p className="font-medium">{examSubmission.score}/100%</p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Durasi Asesmen:</p>
@@ -88,42 +93,52 @@ function PreviewLayout({ data, roleSearchParams }: IProps) {
           </div>
         </div>
 
-        {/* Info Pertanyaan */}
         <span className="w-max h-9 text-sm flex items-center px-4 py-2 bg-primary text-white shadow-sm rounded-md">
           Soal {currentQuestionIndex + 1} dari {questions.length}
         </span>
 
-        {/* Render Soal Sesuai Tipe */}
-        {currentQuestion.type === 'CHECKBOX' ? (
-          <QuestionCardCheckbox
-            question={currentQuestion.title}
-            answers={currentQuestion.answers}
-            imageUrl={currentQuestion.image}
-            imageLabel={currentQuestion.imageLabel}
-            correctAnswers={
-              currentQuestion.answers
-                .filter((ans) => ans.isCorrect)
-                .map((ans) => ans.id)
-            }
-            selectedAnswers={
-              currentQuestion.answers
-                .filter((ans) => ans.isSelectedByUser)
-                .map((ans) => ans.id)
-            }
-          />
-        ) : (
-          <QuestionCardRadio
-            question={currentQuestion.title}
-            answers={currentQuestion.answers}
-            imageUrl={currentQuestion.image}
-            imageLabel={currentQuestion.imageLabel}
-            correctAnswer={currentQuestion.answers[currentQuestion.correctAnswerIndex!]?.id}
-            selectedAnswer={
-              currentQuestion.answers
-                .find((ans) => ans.isSelectedByUser)?.id
-            }
-          />
-        )}
+        <div className="space-y-2">
+          {currentQuestion.type === 'CHECKBOX' ? (
+            <>
+              <QuestionCardCheckbox
+                question={currentQuestion.title}
+                answers={currentQuestion.answers}
+                imageUrl={currentQuestion.image}
+                imageLabel={currentQuestion.imageLabel}
+                correctAnswers={
+                  currentQuestion.answers
+                    .filter((ans) => ans.isCorrect)
+                    .map((ans) => ans.id)
+                }
+                selectedAnswers={
+                  currentQuestion.answers
+                    .filter((ans) => ans.isSelectedByUser)
+                    .map((ans) => ans.id)
+                }
+              />
+              <span className="block text-center font-semibold text-sm">
+                {currentQuestion.score} dari {currentQuestion.answers.filter((a) => a.isCorrect).length} Poin
+              </span>
+            </>
+          ) : (
+            <>
+              <QuestionCardRadio
+                question={currentQuestion.title}
+                answers={currentQuestion.answers}
+                imageUrl={currentQuestion.image}
+                imageLabel={currentQuestion.imageLabel}
+                correctAnswer={currentQuestion.answers[currentQuestion.correctAnswerIndex!]?.id}
+                selectedAnswer={
+                  currentQuestion.answers
+                    .find((ans) => ans.isSelectedByUser)?.id
+                }
+              />
+              <span className="block text-center font-semibold text-sm">
+                {currentQuestion.score} dari {currentQuestion.correctAnswerIndex! < 0 ? 0 : 1} Poin
+              </span>
+            </>
+          )}
+        </div>
 
         {/* Navigasi */}
         <div className="w-full flex justify-between gap-2 items-center">

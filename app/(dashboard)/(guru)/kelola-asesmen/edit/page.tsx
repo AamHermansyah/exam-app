@@ -4,12 +4,15 @@ import EditUjianLayout from './_layouts/edit-ujian-layout';
 import { getExamById } from '@/data/exam';
 import { SearchParams } from 'next/dist/server/request/search-params';
 import { redirect, RedirectType } from 'next/navigation';
+import { getUserByToken } from '@/data/user';
 
 async function EditUjianPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
   const id = (await searchParams).id;
   const token = (await cookies()).get('token');
-
-  if (!id) return redirect('/404', 'replace' as RedirectType);
+  const user = await getUserByToken(token!.value);
+  if (user!.role === 'STUDENT') {
+    redirect('/daftar-asesmen', 'replace' as RedirectType);
+  };
 
   const res = await getExamById({
     examId: id as string,

@@ -7,6 +7,7 @@ import { TokenPayload } from '@/types';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 export async function loginUser(input: LoginSchemaType) {
   const validatedFields = loginSchema.safeParse(input);
@@ -75,4 +76,5 @@ export async function loginUser(input: LoginSchemaType) {
 
 export async function logoutUser() {
   (await cookies()).delete('token');
+  redirect('/login');
 }

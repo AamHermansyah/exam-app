@@ -6,20 +6,15 @@ import {
 } from "@/components/ui/sidebar"
 import { getUserByToken } from "@/data/user";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { ReactNode } from "react";
 
 async function DashboadLayout({ children }: { children: ReactNode }) {
   const token = (await cookies()).get('token');
-  if (!token?.value) redirect('/login');
-
-  const user = await getUserByToken(token.value);
-  if (!user) redirect('/404');
-  if (!user.isActive) redirect('/account-nonactivated');
+  const user = await getUserByToken(token!.value);
 
   return (
     <SidebarProvider>
-      <AppSidebar user={user} />
+      <AppSidebar user={user!} />
       <SidebarInset>
         <header className="flex h-12 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4">

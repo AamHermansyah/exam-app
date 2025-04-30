@@ -52,12 +52,12 @@ async function Overview({ id, token }: IProps) {
           <p className="font-medium capitalize">{exam.category.replaceAll('-', ' ')}</p>
         </div>
         <div className="space-y-1">
-          <p className="text-sm text-primary">Skor Minimal</p>
-          <p className="font-medium">{exam.minScore}/100</p>
+          <p className="text-sm text-primary">Skor Minimal (%)</p>
+          <p className="font-medium">{exam.minScore}/100%</p>
         </div>
         <div className="space-y-1">
           <p className="text-sm text-primary">Rata Rata Skor</p>
-          <p className="font-medium">{exam.avgScoreStudents}</p>
+          <p className="font-medium">{(exam.avgScoreStudents || 0).toFixed(2)}%</p>
         </div>
       </div>
     </div>
