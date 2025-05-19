@@ -23,11 +23,13 @@ interface IProps {
   page: number;
 }
 
+const pageSize = 20;
+
 async function Participants({ id, page, token }: IProps) {
   const { data: submissions, ...pagination } = await getExamSubmissionByExamId(id, {
     token,
     page,
-    pageSize: 1000
+    pageSize
   });
 
   return (
@@ -56,7 +58,7 @@ async function Participants({ id, page, token }: IProps) {
 
               return (
                 <TableRow key={item.id}>
-                  <TableCell className="pl-4 py-4">{index + 1}</TableCell>
+                  <TableCell className="pl-4 py-4">{(page - 1) * pageSize + index + 1}</TableCell>
                   <TableCell className="py-4 max-w-[150px]">
                     <span className="block">{item.user.fullName}</span>
                     <span className="block">{`${item.user.institution} (${item.user.class})`}</span>
