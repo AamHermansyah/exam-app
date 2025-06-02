@@ -36,7 +36,11 @@ async function Participants({ id, page, token }: IProps) {
     <div className="space-y-2">
       <div className="w-full flex justify-between items-center gap-4">
         <h1 className="text-lg font-medium">Peserta</h1>
-        <ExportStudentsButton data={submissions} />
+        <ExportStudentsButton
+          id={id}
+          token={token}
+          data={submissions}
+        />
       </div>
       <div className="w-full space-y-4">
         <Table className="w-full overflow-x-auto border">

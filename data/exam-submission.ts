@@ -1,3 +1,5 @@
+'use server'
+
 import { dotEnvs } from "@/constants";
 import prisma from "@/lib/db";
 import { handleCatchError } from "@/lib/utils";
